@@ -6,7 +6,7 @@ source $VIMRUNTIME/mswin.vim
 behave mswin
 lang messages zh_CH.UTF-8
 
-set guifont=nsimsun
+set guifont=Consolas
 set number
 set shiftwidth=4
 set cindent
@@ -67,3 +67,13 @@ let g:indent_guides_enable_on_vim_startup = 1
 
 "nerdtree
 map <F2> :NERDTreeToggle<CR>
+
+"
+vmap {} s{<Esc>pa}<Esc>
+vmap [] s[<Esc>pa]<Esc>
+vmap () s(<Esc>pa)<Esc>
+vmap <> s<<Esc>pa><Esc>
+vmap "" s"<Esc>pa"<Esc>
+vmap '' s'<Esc>pa'<Esc>
+nmap d' vi'dhPl2x<Esc>
+nmap d" vi"dhPl2x<Esc>

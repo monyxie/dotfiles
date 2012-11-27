@@ -215,4 +215,7 @@ snippet fun
 snippet array
 	$${1:arrayName} = array('${2}' => ${3});${4}
 snippet fout
-	file_put_contents('${1:D:\errlog.txt}', 'IN ' . __FILE__ . ":\n" . ${2:"ok"} . "\n", ${3:FILE_APPEND});${4}
+	file_put_contents('${1:D:\errlog.log}', '['.gmdate('Y/m/d H:i:s').'] Line '.__LINE__.' in '.__FILE__." says:\n"
+			. ${2:"ok"}
+			. "\n", ${3:FILE_APPEND});${4}
+
