@@ -6,7 +6,7 @@ source $VIMRUNTIME/mswin.vim
 behave mswin
 lang messages zh_CH.UTF-8
 
-set guifont=Consolas
+set guifont=ProggyTinyBP:h7
 set number
 set shiftwidth=4
 set cindent
@@ -23,7 +23,7 @@ set expandtab
 set autoindent
 set fileformats=dos,unix
 set nobackup
-color molokai
+color molokaini
 
 set diffexpr=MyDiff()
 function MyDiff()
@@ -66,7 +66,9 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
 "nerdtree
-map <F2> :NERDTreeToggle<CR>
+map <F1> :tabp<CR>
+map <F2> :tabn<CR>
+map <F3> :NERDTreeToggle<CR>
 
 "
 vmap {} s{<Esc>pa}<Esc>
@@ -77,3 +79,34 @@ vmap "" s"<Esc>pa"<Esc>
 vmap '' s'<Esc>pa'<Esc>
 nmap d' vi'dhPl2x<Esc>
 nmap d" vi"dhPl2x<Esc>
+
+" autoread .debuglog files
+"autocmd BufRead,BufNewFile *.debuglog call Toggle_AutoRead_Debuglog()
+"autocmd FileChangedShellPost *.debuglog call Read_Debuglog()                
+"function Toggle_AutoRead_Debuglog()
+"    if exists('l:autoread_debuglog_enabled') && l:autoread_debuglog_enabled == 1
+"        let l:autoread_debuglog_enabled = 0
+"        set noautoread
+"        echo 'autoread debuglog disabled'
+"    else
+"        let l:autoread_debuglog_enabled = 1
+"        set autoread
+"        echo 'autoread debuglog enabled'
+"    endif
+"endfunction
+"
+"function Read_Debuglog()
+"    if exists('l:autoread_debuglog_enabled') && l:autoread_debuglog_enabled == 1
+"        :e!
+"        $
+"        echo 'updated'
+"    endif
+"endfunction
+"au BufRead *.debuglog :Tail %
+
+function MyTitleLine()
+    let line =  "[" . v:servername . "]%m" . expand("%:t") . " - " . expand("%:h") . " - VIM"
+    return line
+endfunction
+au BufEnter * let &titlestring = MyTitleLine()
+au BufRead * let &titlestring = MyTitleLine()
