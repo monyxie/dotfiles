@@ -1,0 +1,5 @@
+REGEDIT4
+[HKEY_CLASSES_ROOT\*\shell\vimtab]
+@="Edit in a new Vim ta&b"
+[HKEY_CLASSES_ROOT\*\shell\vimtab\command]
+@="d:\\program files\\vim\\vim73\\gvim.exe --remote-tab-silent \"%1\""
