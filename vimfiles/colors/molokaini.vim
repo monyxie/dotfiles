@@ -1,11 +1,10 @@
 " Vim color file
 "
-" Author: Tomas Restrepo <tomas@winterdom.com>
+" Author: Mony Xie <monyxie@gmail.com>
 "
-" Note: Based on the monokai theme for textmate
-" by Wimer Hazenberg and its darker variant 
-" by Hamish Stuart Macpherson
-"
+" Note: Based on the monokai theme ('molokai.vim') by Tomas Restrepo.
+" I only remove all italic to make bitmap fonts look better.
+" I also changed the background colors in diff mode so that changed parts are recognized easily.
 
 hi clear
 
@@ -37,10 +36,10 @@ hi Cursor          guifg=#000000 guibg=#F8F8F0
 hi Debug           guifg=#BCA3A3               gui=bold
 hi Define          guifg=#66D9EF
 hi Delimiter       guifg=#8F8F8F
-hi DiffAdd                       guibg=#13354A
-hi DiffChange      guifg=#89807D guibg=#4C4745
-hi DiffDelete      guifg=#960050 guibg=#1E0010
-hi DiffText                      guibg=#4C4745 gui=none,bold
+hi DiffAdd                       guibg=#553F00
+hi DiffChange      guifg=#89807D guibg=#7F0055
+hi DiffDelete      guifg=#960050 guibg=#990000
+hi DiffText                      guibg=#7F0055 gui=none,bold
 
 hi Directory       guifg=#A6E22E               gui=bold
 hi Error           guifg=#960050 guibg=#1E0010

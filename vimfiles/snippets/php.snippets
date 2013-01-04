@@ -215,10 +215,10 @@ snippet fun
 snippet array
 	$${1:arrayName} = array('${2}' => ${3});${4}
 snippet fout
-	file_put_contents('${1:D:\errlog.log}', '['.date('Y/m/d H:i:s').'] Line '.__LINE__.' in '.__FILE__." says:\n"
+	file_put_contents('${1:D:\php.debuglog}', '['.date('Y/m/d H:i:s').'] Line '.__LINE__.' in '.__FILE__." says:\n"
 		. ${2:'ok'}
 		. "\n", ${3:FILE_APPEND});${4}
 snippet foutt
-	file_put_contents('${1:D:\errlog.log}', '['.date('Y/m/d H:i:s').'] Line '.__LINE__.' in '.__FILE__." says:\n"
+	file_put_contents('${1:D:\php.debuglog}', '['.date('Y/m/d H:i:s').'] Line '.__LINE__.' in '.__FILE__." says:\n"
 		. ($zzqwe='${2:ok}') . (isset($$zzqwe) ? (' = '. (is_array($$zzqwe) ? print_r($$zzqwe, true) : $$zzqwe)) : '')
 		. "\n", ${3:FILE_APPEND});${4}
