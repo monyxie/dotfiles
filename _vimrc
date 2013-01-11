@@ -1,3 +1,5 @@
+set guioptions+=Lr
+set guioptions-=T
 set encoding=utf8
 set fileencodings=utf8,cp936,latin1
 set nocompatible
@@ -6,7 +8,10 @@ source $VIMRUNTIME/mswin.vim
 behave mswin
 lang messages zh_CH.UTF-8
 
-set guifont=ProggyTinyBP:h7
+"set guifont=ProggyTinyBP:h7
+"set guifont=Lucida_Console:h9:cANSI
+"set guifont=Anonymous:h8:cANSI
+set guifont=Anonymous_Pro:h8:cANSI
 set number
 set shiftwidth=4
 set cindent
@@ -23,8 +28,31 @@ set expandtab
 set autoindent
 set fileformats=dos,unix
 set nobackup
-color molokaini
 set diffopt=filler,vertical
+let s:color = 'github'
+let s:diffcolor = 'molokaini'
+
+"IndentGuides
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+
+"SnipMate
+let g:snips_author = 'Mony Xie'
+
+if &diff
+    execute 'color ' . s:diffcolor
+    if has('win32')
+        "au GUIEnter * simalt ~x | "x on an English Windows version. n on a French one
+        "above didn't work sometimes
+        set lines=999
+        set columns=999
+    endif
+else
+    execute 'color ' + s:color
+endif
+
+
 
 set diffexpr=MyDiff()
 function MyDiff()
@@ -51,56 +79,98 @@ function MyDiff()
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 
-"php and python execution
-"au FileType php map <F5> :call DebugRun('php')<cr>
-"au FileType php imap <F5> <Esc>:call DebugRun('php')<cr>
-au FileType python map <F5> :call DebugRun('python')<cr>
-au FileType python imap <F5> <Esc>:call DebugRun('python')<cr>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 function DebugRun(cmd)
     :w
     execute '!' . a:cmd . ' %'
 endfunction
 
-"IndentGuides
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
+"custom title
+function MyTitleLine()
+    if match(v:servername, "^GVIM\\d*$") != -1
+        "default server
+        let l:servername = ''
+    else
+        let l:servername = v:servername
+    endif
+    let line =  "" . l:servername . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
+    return line
+endfunction
+
+function MyCfile()
+    let s:mycfile = expand('<cfile>')
+    if !filereadable(s:mycfile)
+        if strpart(s:mycfile, 0, 1) == '/' || strpart(s:mycfile, 0, 1) == '\\'
+            let s:mycfile2 = strpart(s:mycfile, 1)
+            if filereadable(s:mycfile2)
+                let s:mycfile = s:mycfile2
+            endif
+        endif
+    endif
+    return s:mycfile
+endfunction
+
+"
+function MyJumpMyCfile()
+    let s:mycfile = expand('<cfile>')
+    if filereadable(s:mycfile)
+        :exec 'tabe ' . s:mycfile
+    else
+        if strpart(s:mycfile, 0, 1) == '/' || strpart(s:mycfile, 0, 1) == '\\'
+            let s:mycfile2 = strpart(s:mycfile, 1)
+            if filereadable(s:mycfile2)
+                :exec 'tabe ' . s:mycfile2
+            endif
+        endif
+    endif
+endfunction
+    
+
+
+
 
 "nerdtree
-map <F1> :tabp<CR>
-map <F2> :tabn<CR>
 map <F3> :NERDTreeToggle<CR>
+map <F3> <Esc><Esc>:NERDTreeToggle<CR>
+
+nmap <F1> :tabp<CR>
+nmap <F2> :tabn<CR>
+imap <F1> <Esc><Esc>:tabp<CR>
+imap <F2> <Esc><Esc>:tabn<CR>
 
 nmap <Space> 15j
 nmap <S-Space> 15k
 
-"
-"vmap {} s{<Esc>pa}<Esc>
-"vmap [] s[<Esc>pa]<Esc>
-"vmap () s(<Esc>pa)<Esc>
-"vmap <> s<<Esc>pa><Esc>
-"vmap "" s"<Esc>pa"<Esc>
-"vmap '' s'<Esc>pa'<Esc>
 nmap d' vi'dhPl2x<Esc>
 nmap d" vi"dhPl2x<Esc>
 
-"custom title
-function MyTitleLine()
-    let line =  "[" . v:servername . "]%m" . expand("%:t") . " - " . expand("%:h") . " - VIM"
-    return line
-endfunction
-au BufEnter * let &titlestring = MyTitleLine()
-au BufRead  * let &titlestring = MyTitleLine()
-au BufWrite * let &titlestring = MyTitleLine()
+" CTRL+h/j/k/l to navigate between windows
+map <silent> <C-h> :wincmd h<CR>
+map <silent> <C-j> :wincmd j<CR>
+map <silent> <C-k> :wincmd k<CR>
+map <silent> <C-l> :wincmd l<CR>
+imap <silent> <C-h> <Esc>:wincmd h<CR>
+imap <silent> <C-j> <Esc>:wincmd j<CR>
+imap <silent> <C-k> <Esc>:wincmd k<CR>
+imap <silent> <C-l> <Esc>:wincmd l<CR>
 
-let g:snips_author = 'Mony Xie'
+"double click to highlight all occurrances
+nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
+inoremap <silent> <2-LeftMouse> <esc>:let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
+nnoremap <silent> <3-LeftMouse> V
 
-if &diff && has('win32')
-    "maxmize gui window
-    "au GUIEnter * simalt ~x | "x on an English Windows version. n on a French one
-    "above didn't work sometimes
-    set lines=999
-    set columns=999
-endif
+nmap <silent> <MiddleMouse> <LeftMouse>:call MyJumpMyCfile()<cr>
 
-au BufRead *.log :set nowrap | :set number
+"php and python execution
+au FileType php map <F5> :call DebugRun('php')<cr>
+au FileType php imap <F5> <Esc>:call DebugRun('php')<cr>
+au FileType python map <F5> :call DebugRun('python')<cr>
+au FileType python imap <F5> <Esc>:call DebugRun('python')<cr>
+
+"title string
+au BufEnter     * let &titlestring = MyTitleLine()
+au BufReadPost  * let &titlestring = MyTitleLine()
+au BufWritePost * let &titlestring = MyTitleLine()
+
+au BufReadPost *.log :set nowrap | :set number
