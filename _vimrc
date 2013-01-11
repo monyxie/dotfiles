@@ -1,10 +1,12 @@
 set encoding=utf8
 set fileencodings=utf8,cp936,latin1
 set nocompatible
-source $VIMRUNTIME/vimrc_example.vim
-source $VIMRUNTIME/mswin.vim
-behave mswin
-lang messages zh_CH.UTF-8
+if has('win32')
+    source $VIMRUNTIME/vimrc_example.vim
+    source $VIMRUNTIME/mswin.vim
+    behave mswin
+    lang messages zh_CH.UTF-8
+endif
 
 set guifont=ProggyTinyBP:h7
 set number
@@ -74,13 +76,6 @@ map <F3> :NERDTreeToggle<CR>
 nmap <Space> 15j
 nmap <S-Space> 15k
 
-"
-"vmap {} s{<Esc>pa}<Esc>
-"vmap [] s[<Esc>pa]<Esc>
-"vmap () s(<Esc>pa)<Esc>
-"vmap <> s<<Esc>pa><Esc>
-"vmap "" s"<Esc>pa"<Esc>
-"vmap '' s'<Esc>pa'<Esc>
 nmap d' vi'dhPl2x<Esc>
 nmap d" vi"dhPl2x<Esc>
 
@@ -104,3 +99,5 @@ if &diff && has('win32')
 endif
 
 au BufRead *.log :set nowrap | :set number
+
+syntax on
