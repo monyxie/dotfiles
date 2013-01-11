@@ -3,11 +3,14 @@ set guioptions-=T
 set encoding=utf8
 set fileencodings=utf8,cp936,latin1
 set nocompatible
-source $VIMRUNTIME/vimrc_example.vim
-source $VIMRUNTIME/mswin.vim
-behave mswin
-lang messages zh_CH.UTF-8
+if has('win32')
+    source $VIMRUNTIME/vimrc_example.vim
+    source $VIMRUNTIME/mswin.vim
+    behave mswin
+    lang messages zh_CH.UTF-8
+endif
 
+"set guifont=ProggyTinyBP:h7
 "set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
 "set guifont=Anonymous:h8:cANSI
@@ -53,7 +56,6 @@ else
 endif
 
 
-
 set diffexpr=MyDiff()
 function MyDiff()
   let opt = '-a --binary '
@@ -79,7 +81,9 @@ function MyDiff()
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"=====================================================================================
+" custom functions
+"=====================================================================================
 
 function DebugRun(cmd)
     :w
@@ -125,10 +129,10 @@ function MyJumpMyCfile()
         endif
     endif
 endfunction
-    
 
-
-
+"=====================================================================================
+" maps
+"=====================================================================================
 
 "nerdtree
 map <F3> :NERDTreeToggle<CR>
@@ -141,6 +145,7 @@ imap <F2> <Esc><Esc>:tabn<CR>
 
 nmap <Space> 15j
 nmap <S-Space> 15k
+
 
 nmap d' vi'dhPl2x<Esc>
 nmap d" vi"dhPl2x<Esc>
@@ -162,6 +167,9 @@ nnoremap <silent> <3-LeftMouse> V
 
 nmap <silent> <MiddleMouse> <LeftMouse>:call MyJumpMyCfile()<cr>
 
+"=====================================================================================
+" autocmds
+"=====================================================================================
 "php and python execution
 au FileType php map <F5> :call DebugRun('php')<cr>
 au FileType php imap <F5> <Esc>:call DebugRun('php')<cr>
