@@ -1,3 +1,7 @@
+"some options need to be set earlier
+set langmenu=en_US.UTF-8
+let $LANG="en"
+"language messages en
 set guioptions+=Lr
 set guioptions-=T
 set encoding=utf8
@@ -7,7 +11,6 @@ if has('win32')
     source $VIMRUNTIME/vimrc_example.vim
     source $VIMRUNTIME/mswin.vim
     behave mswin
-    lang messages zh_CH.UTF-8
 endif
 
 "set guifont=ProggyTinyBP:h7
@@ -32,8 +35,62 @@ set autoindent
 set fileformats=dos,unix
 set nobackup
 set diffopt=filler,vertical
-let s:color = 'github'
-let s:diffcolor = 'molokaini'
+set grepprg=grep\ -nH
+
+let s:color = 'solarized'
+let s:diffcolor = 'solarized'
+let s:termcolor = 'default'
+let s:termdiffcolor = 'default'
+
+" ------------------------------------------------------------------
+" Solarized Colorscheme Config
+" ------------------------------------------------------------------
+function SolarizedConfig()
+    let g:solarized_contrast="high"    "default value is normal
+    let g:solarized_visibility="high"    "default value is normal
+    let g:solarized_diffmode="high"    "default value is normal
+    let g:solarized_hitrail=1    "default value is 0
+    "syntax enable
+    set background=light
+    "colorscheme solarized
+    " ------------------------------------------------------------------
+    " The following items are available options, but do not need to be
+    " included in your .vimrc as they are currently set to their defaults.
+
+    " let g:solarized_termtrans=0
+    " let g:solarized_degrade=0
+    " let g:solarized_bold=1
+    " let g:solarized_underline=1
+    " let g:solarized_italic=1
+    " let g:solarized_termcolors=16
+    " let g:solarized_menu=1
+endfunction
+
+" ------------------------------------------------------------------
+" Colorscheme Config
+" ------------------------------------------------------------------
+if has("gui_running")
+    if &diff
+        if s:diffcolor == 'solarized'
+            call SolarizedConfig()
+        endif
+        execute 'color ' . s:diffcolor
+    else
+        if s:color == 'solarized'
+            call SolarizedConfig()
+        endif
+        execute 'color ' . s:color
+    endif
+else "no gui
+    if &diff
+        execute 'color ' . s:termdiffcolor
+    else
+        execute 'color ' . s:termcolor
+    endif
+endif
+
+let php_sql_query = 1
+"let php_folding = 1
 
 "IndentGuides
 let g:indent_guides_start_level = 2
@@ -44,15 +101,8 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:snips_author = 'Mony Xie'
 
 if &diff
-    execute 'color ' . s:diffcolor
-    if has('win32')
-        "au GUIEnter * simalt ~x | "x on an English Windows version. n on a French one
-        "above didn't work sometimes
-        set lines=999
-        set columns=999
-    endif
-else
-    execute 'color ' + s:color
+    set lines=999
+    set columns=999
 endif
 
 
@@ -128,6 +178,37 @@ function MyJumpMyCfile()
             endif
         endif
     endif
+endfunction
+
+function VimClientHandle()
+    let l:argv = argv();
+    for a in l:argv
+        let l:sp = expand("/")
+        let l:lastsp = strridx(a, l:sp)
+        let l:file = strpart(a, l:lastsp + 1)
+        let l:lastdot = strridx(l:file, ".")
+        let l:ext = strpart(l:file, l:lastdot + 1)
+        let l:re = "\\c^" . l:ext . "$"
+        echo l:re
+        let l:srvlst = split(serverlist())
+        let l:srvex = 0
+        for srv in l:srvlst
+            echo srv
+            if match(srv, l:re) == 0
+                exe "!start gvim --servername " . srv . " --remote-tab-silent \"" . a . "\""
+                call remote_foreground(srv)
+                let l:srvex = 1
+                break
+            endif
+        endfor
+        if (l:srvex == 1)
+            exit
+        else
+            exe "!start gvim --servername " . srv . " --remote-tab-silent \"" . a . "\""
+            file
+        endif
+    endfor
+    exit
 endfunction
 
 "=====================================================================================
