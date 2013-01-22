@@ -1,6 +1,50 @@
+" Open files of different types in seperated vim instances
+" (or servers)
+" This must be done BEFORE ':set encoding=utf8' to make sure
+" the encoding of the filenames stay unchanged
+function GetSvrName(ext)
+    let l:ext_srv_map = []
+    call add(l:ext_srv_map, ['\c\v^php$'             , 'php'])
+    call add(l:ext_srv_map, ['\c\v^js$'              , 'js'])
+    call add(l:ext_srv_map, ['\c\v^htm|html|dwt|lbi$', 'html'])
+    call add(l:ext_srv_map, ['\c\v^py$'              , 'py'])
+    call add(l:ext_srv_map, ['\c\v^txt|text|md|mkd$' , 'txt'])
+    call add(l:ext_srv_map, ['\c\v^c|cpp|h|hpp$'     , 'c'])
+    call add(l:ext_srv_map, ['\c\v^log|debuglog$'    , 'log'])
+    let l:srvname = 'gvim'
+    for esm in l:ext_srv_map 
+        if (match(a:ext, esm[0]) == 0)
+            let l:srvname = esm[1]
+            break
+        endif
+    endfor
+    return l:srvname
+endfunction
+
+function VimClientHandle()
+    if &diff || !argc()
+        return 0
+    endif
+    let l:argv = argv()
+    for a in l:argv
+        let l:sp = expand('/')
+        let l:lastsp = strridx(a, l:sp)
+        let l:file = strpart(a, l:lastsp + 1)
+        let l:lastdot = strridx(l:file, '.')
+        let l:ext = strpart(l:file, l:lastdot + 1)
+        let l:srvname = GetSvrName(l:ext)
+        exe 'silent !start gvim --servername ' . l:srvname . ' --remote-tab-silent "' . a . '"'
+        call remote_foreground(l:srvname)
+    endfor
+    exit
+endfunction
+
+call VimClientHandle()
+
+"====================================================================
 "some options need to be set earlier
 set langmenu=en_US.UTF-8
-let $LANG="en"
+let $LANG='en'
 "language messages en
 set guioptions+=Lr
 set guioptions-=T
@@ -37,7 +81,7 @@ set nobackup
 set diffopt=filler,vertical
 set grepprg=grep\ -nH
 
-let s:color = 'solarized'
+let s:color = 'zenburn'
 let s:diffcolor = 'solarized'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
@@ -46,9 +90,9 @@ let s:termdiffcolor = 'default'
 " Solarized Colorscheme Config
 " ------------------------------------------------------------------
 function SolarizedConfig()
-    let g:solarized_contrast="high"    "default value is normal
-    let g:solarized_visibility="high"    "default value is normal
-    let g:solarized_diffmode="high"    "default value is normal
+    let g:solarized_contrast='high'    "default value is normal
+    let g:solarized_visibility='high'    "default value is normal
+    let g:solarized_diffmode='high'    "default value is normal
     let g:solarized_hitrail=1    "default value is 0
     "syntax enable
     set background=light
@@ -69,7 +113,7 @@ endfunction
 " ------------------------------------------------------------------
 " Colorscheme Config
 " ------------------------------------------------------------------
-if has("gui_running")
+if has('gui_running')
     if &diff
         if s:diffcolor == 'solarized'
             call SolarizedConfig()
@@ -91,6 +135,9 @@ endif
 
 let php_sql_query = 1
 "let php_folding = 1
+
+let mapleader=','
+
 
 "IndentGuides
 let g:indent_guides_start_level = 2
@@ -142,7 +189,7 @@ endfunction
 
 "custom title
 function MyTitleLine()
-    if match(v:servername, "^GVIM\\d*$") != -1
+    if match(v:servername, '^GVIM$') != -1
         "default server
         let l:servername = ''
     else
@@ -178,37 +225,6 @@ function MyJumpMyCfile()
             endif
         endif
     endif
-endfunction
-
-function VimClientHandle()
-    let l:argv = argv();
-    for a in l:argv
-        let l:sp = expand("/")
-        let l:lastsp = strridx(a, l:sp)
-        let l:file = strpart(a, l:lastsp + 1)
-        let l:lastdot = strridx(l:file, ".")
-        let l:ext = strpart(l:file, l:lastdot + 1)
-        let l:re = "\\c^" . l:ext . "$"
-        echo l:re
-        let l:srvlst = split(serverlist())
-        let l:srvex = 0
-        for srv in l:srvlst
-            echo srv
-            if match(srv, l:re) == 0
-                exe "!start gvim --servername " . srv . " --remote-tab-silent \"" . a . "\""
-                call remote_foreground(srv)
-                let l:srvex = 1
-                break
-            endif
-        endfor
-        if (l:srvex == 1)
-            exit
-        else
-            exe "!start gvim --servername " . srv . " --remote-tab-silent \"" . a . "\""
-            file
-        endif
-    endfor
-    exit
 endfunction
 
 "=====================================================================================

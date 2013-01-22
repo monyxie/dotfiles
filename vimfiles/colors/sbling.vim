@@ -1,11 +1,8 @@
 " Vim color file
 "
-" Author: Anthony Carapetis <anthony.carapetis@gmail.com>
+" Author: Mony Xie <monyxie@gmail.com>
 "
-" Note: Based on github's syntax highlighting theme
-"       Used Brian Mock's darkspectrum as a starting point/template
-"       Thanks to Ryan Heath for an easy list of some of the colours:
-"       http://rpheath.com/posts/356-github-theme-for-syntax-gem
+" Note: The 'github' theme by Anthony Carapetis is used as template
 
 hi clear
 
@@ -18,36 +15,36 @@ if version > 580
 	syntax reset
     endif
 endif
-let g:colors_name="githubni"
+let g:colors_name="sbling"
 
 hi Normal       guifg=#000000 guibg=#F8F8FF
 
 " {{{ Cursor
 hi Cursor		guibg=#444454 guifg=#F8F8FF
-hi CursorLine	guibg=#D8D8DD
+hi CursorLine	guibg=#DAE8DA
 hi CursorColumn	guibg=#E8E8EE
 " }}}
 
 " {{{ Diff
 hi DiffAdd         guifg=#003300 guibg=#DDFFDD gui=none
-hi DiffChange                    guibg=#ECECEC gui=none
+hi DiffChange                    guibg=#ececec gui=none
 hi DiffText        guifg=#000033 guibg=#DDDDFF gui=none
 hi DiffDelete      guifg=#DDCCCC guibg=#FFDDDD gui=none
 " }}}
 
 " {{{ Folding / Line Numbering / Status Lines
-hi Folded		guibg=#ECECEC guifg=#808080 gui=bold
-hi vimFold		guibg=#ECECEC guifg=#808080 gui=bold
-hi FoldColumn	guibg=#ECECEC guifg=#808080 gui=bold
+hi Folded		guibg=#919991 guifg=#F2F2FF gui=bold
+hi vimFold		guibg=#919991 guifg=#F2F2FF gui=bold
+hi FoldColumn	guibg=#919991 guifg=#F2F2FF gui=bold
 
 hi LineNr		guifg=#959595 guibg=#ECECEC gui=bold
 hi NonText		guifg=#808080 guibg=#ECECEC
-hi Folded		guifg=#808080 guibg=#ECECEC gui=bold
-hi FoldeColumn  guifg=#808080 guibg=#ECECEC gui=bold
+hi Folded		guibg=#919991 guifg=#F2F2FF gui=bold
+hi FoldeColumn  guibg=#919991 guifg=#F2F2FF gui=bold
 
 hi VertSplit	guibg=#bbbbbb guifg=#bbbbbb gui=none
 hi StatusLine   guibg=#bbbbbb guifg=#404040 gui=bold
-hi StatusLineNC guibg=#d4d4d4 guifg=#404040 gui=none
+hi StatusLineNC guibg=#d4d4d4 guifg=#404040 gui=italic
 " }}}
 
 " {{{ Misc
@@ -56,31 +53,31 @@ hi MoreMsg		guifg=#990000
 
 hi Title		guifg=#ef5939
 hi WarningMsg	guifg=#ef5939
-hi SpecialKey   guifg=#177F80 gui=none
+hi SpecialKey   guifg=#177F80 gui=italic
 
-hi MatchParen	guibg=#cdcdfd guifg=#000000
+hi MatchParen	guibg=#00CC29 guifg=#FFFFFF gui=bold,italic
 hi Underlined	guifg=#000000 gui=underline
 hi Directory	guifg=#990000
 " }}}
 
 " {{{ Search, Visual, etc
-hi Visual		guifg=#FFFFFF guibg=#3465a4 gui=none
-hi VisualNOS    guifg=#FFFFFF guibg=#204a87 gui=none
-hi IncSearch	guibg=#cdcdfd guifg=#000000 gui=none
-hi Search		guibg=#cdcdfd guifg=#000000 gui=none
+hi Visual		guifg=#FFFFFF guibg=#006622 gui=none
+hi VisualNOS    guifg=#FFFFFF guibg=#006622 gui=none
+hi IncSearch	guibg=#00CC29 guifg=#FFFFFF gui=italic
+hi Search		guibg=#00CC29 guifg=#FFFFFF gui=italic
 " }}}
 
 " {{{ Syntax groups
 hi Ignore		guifg=#808080
-hi Identifier	guifg=#0086B3
-hi PreProc		guifg=#A0A0A0 gui=bold
+hi Identifier	guifg=#179926 gui=none
+hi PreProc		guifg=#BF80FF gui=bold
 hi Comment		guifg=#999988
-hi Constant		guifg=#177F80 gui=none
-hi String		guifg=#D81745
-hi Function		guifg=#990000 gui=bold
-hi Statement	guifg=#000000 gui=bold
+hi Constant		guifg=#177F80 gui=bold
+hi String		guifg=#CCB800
+hi Function		guifg=#00660A gui=bold
+hi Statement	guifg=#F92672 gui=bold
 hi Type			guifg=#445588 gui=bold
-hi Number		guifg=#1C9898
+hi Number		guifg=#00990F
 hi Todo			guifg=#FFFFFF guibg=#990000 gui=bold
 hi Special		guifg=#159828 gui=bold
 hi rubySymbol   guifg=#960B73
@@ -90,13 +87,14 @@ hi Label        guifg=#000000 gui=bold
 hi StorageClass guifg=#000000 gui=bold
 hi Structure    guifg=#000000 gui=bold
 hi TypeDef      guifg=#000000 gui=bold
+hi Keyword		guifg=#003305 gui=bold
 " }}}
 
 " {{{ Completion menus
 hi WildMenu     guifg=#7fbdff guibg=#425c78 gui=none
 
 hi Pmenu        guibg=#808080 guifg=#ffffff gui=bold
-hi PmenuSel     guibg=#cdcdfd guifg=#000000 gui=none
+hi PmenuSel     guibg=#cdcdfd guifg=#000000 gui=italic
 hi PmenuSbar    guibg=#000000 guifg=#444444
 hi PmenuThumb   guibg=#aaaaaa guifg=#aaaaaa
 " }}}
