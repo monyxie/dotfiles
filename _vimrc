@@ -55,6 +55,7 @@ if has('win32')
     source $VIMRUNTIME/vimrc_example.vim
     source $VIMRUNTIME/mswin.vim
     behave mswin
+    let g:internetbrowser = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 endif
 
 "set guifont=ProggyTinyBP:h7
@@ -81,8 +82,8 @@ set nobackup
 set diffopt=filler,vertical
 set grepprg=grep\ -nH
 
-let s:color = 'zenburn'
-let s:diffcolor = 'solarized'
+let s:color = 'sbling'
+let s:diffcolor = 'sbling'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
 
@@ -216,17 +217,22 @@ endfunction
 function MyJumpMyCfile()
     let s:mycfile = expand('<cfile>')
     if filereadable(s:mycfile)
-        :exec 'tabe ' . s:mycfile
+        exe 'tabe ' . s:mycfile
     else
         if strpart(s:mycfile, 0, 1) == '/' || strpart(s:mycfile, 0, 1) == '\\'
             let s:mycfile2 = strpart(s:mycfile, 1)
             if filereadable(s:mycfile2)
-                :exec 'tabe ' . s:mycfile2
+                exe 'tabe ' . s:mycfile2
             endif
         endif
     endif
 endfunction
 
+function MyOpenHttpLink()
+    if exists('g:internetbrowser')
+        exe 'silent !start "' . g:internetbrowser . '" "' . expand('<cWORD>') . '"'
+    endif
+endfunction
 "=====================================================================================
 " maps
 "=====================================================================================
@@ -235,6 +241,7 @@ endfunction
 map <F3> :NERDTreeToggle<CR>
 map <F3> <Esc><Esc>:NERDTreeToggle<CR>
 
+" http://localhost/lf1210/
 nmap <F1> :tabp<CR>
 nmap <F2> :tabn<CR>
 imap <F1> <Esc><Esc>:tabp<CR>
