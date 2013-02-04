@@ -1,3 +1,10 @@
+" Filename: .vimrc
+" Author: Mony Xie(monyxie at gmail dot com)
+
+" vim:fdm=marker
+
+
+" {{{ VimClientHandle()
 " Open files of different types in seperated vim instances
 " (or servers)
 " This must be done BEFORE ':set encoding=utf8' to make sure
@@ -41,6 +48,9 @@ endfunction
 
 call VimClientHandle()
 
+" }}}
+
+" {{{ lang, enc, guiopt, cp and behavior
 "====================================================================
 "some options need to be set earlier
 set langmenu=en_US.UTF-8
@@ -58,11 +68,16 @@ if has('win32')
     let g:internetbrowser = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 endif
 
+" }}}
+
+" {{{ general options, font, colorscheme
 "set guifont=ProggyTinyBP:h7
 "set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
 "set guifont=Anonymous:h8:cANSI
-set guifont=Anonymous_Pro:h8:cANSI
+" set guifont=Anonymous_Pro:h8:cANSI
+set guifont=PT_Mono:h8:cANSI
+" set guifont=fixed613
 set number
 set shiftwidth=4
 set cindent
@@ -82,11 +97,18 @@ set nobackup
 set diffopt=filler,vertical
 set grepprg=grep\ -nH
 
+let php_sql_query = 1
+"let php_folding = 1
+let mapleader=','
+
 let s:color = 'sbling'
 let s:diffcolor = 'sbling'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
 
+" }}}
+
+" {{{ Colorscheme Config
 " ------------------------------------------------------------------
 " Solarized Colorscheme Config
 " ------------------------------------------------------------------
@@ -134,13 +156,9 @@ else "no gui
     endif
 endif
 
-let php_sql_query = 1
-"let php_folding = 1
+" }}}
 
-let mapleader=','
-
-
-"IndentGuides
+" {{{ IndentGuides
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
@@ -153,7 +171,9 @@ if &diff
     set columns=999
 endif
 
+" }}}
 
+" {{{ MyDiff()
 set diffexpr=MyDiff()
 function MyDiff()
   let opt = '-a --binary '
@@ -179,13 +199,16 @@ function MyDiff()
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 
+" }}}
+
+" {{{ custom functions
 "=====================================================================================
 " custom functions
 "=====================================================================================
 
 function DebugRun(cmd)
     :w
-    execute '!' . a:cmd . ' %'
+    execute '! ' . a:cmd . ' %'
 endfunction
 
 "custom title
@@ -233,6 +256,10 @@ function MyOpenHttpLink()
         exe 'silent !start "' . g:internetbrowser . '" "' . expand('<cWORD>') . '"'
     endif
 endfunction
+
+" }}}
+
+" {{{ key mappings
 "=====================================================================================
 " maps
 "=====================================================================================
@@ -271,6 +298,9 @@ nnoremap <silent> <3-LeftMouse> V
 
 nmap <silent> <MiddleMouse> <LeftMouse>:call MyJumpMyCfile()<cr>
 
+" }}}
+
+" {{{ autocommands
 "=====================================================================================
 " autocmds
 "=====================================================================================
@@ -286,3 +316,4 @@ au BufReadPost  * let &titlestring = MyTitleLine()
 au BufWritePost * let &titlestring = MyTitleLine()
 
 au BufReadPost *.log :set nowrap | :set number
+" }}}
