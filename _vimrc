@@ -75,9 +75,10 @@ endif
 "set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
 "set guifont=Anonymous:h8:cANSI
-" set guifont=Anonymous_Pro:h8:cANSI
-set guifont=PT_Mono:h8:cANSI
+set guifont=Anonymous_Pro:h10:cANSI
+"set guifont=PT_Mono:h8:cANSI
 " set guifont=fixed613
+" set guifont=Envy_Code_R:h9:cANSI
 set number
 set shiftwidth=4
 set cindent

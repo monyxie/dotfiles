@@ -222,3 +222,8 @@ snippet foutt
 	file_put_contents('${1:D:\php.debuglog}', '['.date('Y/m/d H:i:s').'] Line '.__LINE__.' in '.__FILE__." says:\n"
 		. ($zzqwe='${2:ok}') . (isset($$zzqwe) ? (' = '. (is_array($$zzqwe) ? print_r($$zzqwe, true) : $$zzqwe)) : '')
 		. "\n", ${3:FILE_APPEND});${4}
+# strftime
+snippet ymd
+	strftime('%Y-%m-%d', $${1:time})${2}
+snippet ymds
+	strftime('%Y-%m-%d %H:%M:%S', $${1:time})${2}
