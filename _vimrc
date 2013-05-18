@@ -74,9 +74,11 @@ endif
 "set guifont=ProggyTinyBP:h7
 "set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
-"set guifont=Anonymous:h8:cANSI
-set guifont=Anonymous_Pro:h10:cANSI
-"set guifont=PT_Mono:h8:cANSI
+" set guifont=Anonymous:h10:cANSI
+" set guifont=Monaco:h10:cANSI
+" set linespace=-3
+set guifont=Anonymous_Pro:h8:cANSI
+" set guifont=PT_Mono:h10:cANSI
 " set guifont=fixed613
 " set guifont=Envy_Code_R:h9:cANSI
 set number
@@ -98,12 +100,13 @@ set nobackup
 set diffopt=filler,vertical
 set grepprg=grep\ -nH
 
-let php_sql_query = 1
-"let php_folding = 1
+let g:colorv_loaded = 1
+" let php_sql_query = 1
+" let php_folding = 1
 let mapleader=','
 
-let s:color = 'sbling'
-let s:diffcolor = 'sbling'
+let s:color = 'molokai'
+let s:diffcolor = 'molokaini'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
 
@@ -283,14 +286,14 @@ nmap d' vi'dhPl2x<Esc>
 nmap d" vi"dhPl2x<Esc>
 
 " CTRL+h/j/k/l to navigate between windows
-map <silent> <C-h> :wincmd h<CR>
-map <silent> <C-j> :wincmd j<CR>
-map <silent> <C-k> :wincmd k<CR>
-map <silent> <C-l> :wincmd l<CR>
-imap <silent> <C-h> <Esc>:wincmd h<CR>
-imap <silent> <C-j> <Esc>:wincmd j<CR>
-imap <silent> <C-k> <Esc>:wincmd k<CR>
-imap <silent> <C-l> <Esc>:wincmd l<CR>
+noremap <silent> <C-h> :wincmd h<CR>
+noremap <silent> <C-j> :wincmd j<CR>
+noremap <silent> <C-k> :wincmd k<CR>
+noremap <silent> <C-l> :wincmd l<CR>
+inoremap <silent> <C-h> <Esc>:wincmd h<CR>
+inoremap <silent> <C-j> <Esc>:wincmd j<CR>
+inoremap <silent> <C-k> <Esc>:wincmd k<CR>
+inoremap <silent> <C-l> <Esc>:wincmd l<CR>
 
 "double click to highlight all occurrances
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
@@ -298,6 +301,21 @@ inoremap <silent> <2-LeftMouse> <esc>:let @/='\V\<'.escape(expand('<cword>'), '\
 nnoremap <silent> <3-LeftMouse> V
 
 nmap <silent> <MiddleMouse> <LeftMouse>:call MyJumpMyCfile()<cr>
+
+map <leader>c <c-_><c-_>
+
+noremap <a-`> :echo histget('search', -1) . "\n" . histget('search', -2) . "\n" . histget('search', -3) . "\n" . histget('search', -4) . "\n" . histget('search', -5)<cr>
+noremap <a-1> /<up><cr>
+noremap <a-2> /<up><up><cr>
+noremap <a-3> /<up><up><up><cr>
+noremap <a-4> /<up><up><up><up><cr>
+noremap <a-5> /<up><up><up><up><up><cr>
+
+" gp to select pasted text in visual mode
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]l'
+
+" ctrl-shift-n to search recently modified/deleted text(" register)
+nnoremap <c-s-n> /\V<c-r>"<cr>
 
 " }}}
 
@@ -317,4 +335,6 @@ au BufReadPost  * let &titlestring = MyTitleLine()
 au BufWritePost * let &titlestring = MyTitleLine()
 
 au BufReadPost *.log :set nowrap | :set number
+"Automatically change current directory to that of the file in the buffer  
+au BufEnter * cd %:p:h
 " }}}
