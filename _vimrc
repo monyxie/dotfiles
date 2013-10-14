@@ -4,31 +4,39 @@
 " vim:fdm=marker
 
 
-" {{{ VimClientHandle()
+" {{{ VimDispatch
 " Open files of different types in seperated vim instances
 " (or servers)
 " This must be done BEFORE ':set encoding=utf8' to make sure
 " the encoding of the filenames stay unchanged
 function GetSvrName(ext)
-    let l:ext_srv_map = []
-    call add(l:ext_srv_map, ['\c\v^php$'             , 'php'])
-    call add(l:ext_srv_map, ['\c\v^js$'              , 'js'])
-    call add(l:ext_srv_map, ['\c\v^htm|html|dwt|lbi$', 'html'])
-    call add(l:ext_srv_map, ['\c\v^py$'              , 'py'])
-    call add(l:ext_srv_map, ['\c\v^txt|text|md|mkd$' , 'txt'])
-    call add(l:ext_srv_map, ['\c\v^c|cpp|h|hpp$'     , 'c'])
-    call add(l:ext_srv_map, ['\c\v^log|debuglog$'    , 'log'])
-    let l:srvname = 'gvim'
-    for esm in l:ext_srv_map 
-        if (match(a:ext, esm[0]) == 0)
-            let l:srvname = esm[1]
-            break
-        endif
+    if !exists('s:ext2srv')
+        let s:ext2srv = [
+                    \['VIM', ['vim']],
+                    \['PHP', ['php', 'phtml']],
+                    \['JS', ['js']],
+                    \['CSS', ['css']],
+                    \['HTML', ['htm', 'html', 'dwt', 'lbi']],
+                    \['PY', ['py']],
+                    \['TXT', ['txt', 'text', 'md', 'mkd']],
+                    \['C', ['c', 'cpp', 'h', 'hpp']],
+                    \['LOG', ['log']],
+                    \['INI', ['ini', 'conf']],
+                    \['BAT', ['bat', 'sh']],
+                    \]
+    endif
+    for srv in s:ext2srv 
+        for extname in srv[1]
+            if a:ext == extname
+                return srv[0]
+                " break
+            endif
+        endfor
     endfor
-    return l:srvname
+    return 'GVIM'
 endfunction
 
-function VimClientHandle()
+function VimDispatch()
     if &diff || !argc()
         return 0
     endif
@@ -40,13 +48,13 @@ function VimClientHandle()
         let l:lastdot = strridx(l:file, '.')
         let l:ext = strpart(l:file, l:lastdot + 1)
         let l:srvname = GetSvrName(l:ext)
-        exe 'silent !start gvim --servername ' . l:srvname . ' --remote-tab-silent "' . a . '"'
+        exe 'silent !start gvim --servername ' . l:srvname . ' --remote-tab-silent ' . shellescape(a, 1)
         call remote_foreground(l:srvname)
     endfor
     exit
 endfunction
 
-call VimClientHandle()
+call VimDispatch()
 
 " }}}
 
@@ -75,10 +83,12 @@ endif
 "set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
 " set guifont=Anonymous:h10:cANSI
-" set guifont=Monaco:h10:cANSI
+set guifont=Monaco:h10:cANSI
 " set linespace=-3
-set guifont=Anonymous_Pro:h8:cANSI
-" set guifont=PT_Mono:h10:cANSI
+" set guifont=Anonymous_Pro:h8:cANSI
+" set guifont=PT_Mono:h8:cANSI
+" set guifont=osaka_unicode:h10:cANSI
+" set guifont=Luxi_Mono:h9:cANSI
 " set guifont=fixed613
 " set guifont=Envy_Code_R:h9:cANSI
 set number
@@ -316,6 +326,8 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]l'
 
 " ctrl-shift-n to search recently modified/deleted text(" register)
 nnoremap <c-s-n> /\V<c-r>"<cr>
+
+nnoremap =<space> =a}``
 
 " }}}
 
