@@ -1,6 +1,7 @@
 #.gitignore
 vim73
 vim74
+vim74clean
 *.swp
 *~
 download
