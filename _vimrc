@@ -9,7 +9,7 @@
 " (or servers)
 " This must be done BEFORE ':set encoding=utf8' to make sure
 " the encoding of the filenames stay unchanged
-function GetSvrName(ext)
+function! s:GetSvrName(ext)
     if !exists('s:ext2srv')
         let s:ext2srv = [
                     \['VIM', ['vim']],
@@ -36,7 +36,10 @@ function GetSvrName(ext)
     return 'GVIM'
 endfunction
 
-function VimDispatch()
+function! s:VimDispatch()
+    if !exists('s:norelist')
+        let s:norelist = ['COMMIT_EDITMSG']
+    endif
     if &diff || !argc()
         return 0
     endif
@@ -47,14 +50,19 @@ function VimDispatch()
         let l:file = strpart(a, l:lastsp + 1)
         let l:lastdot = strridx(l:file, '.')
         let l:ext = strpart(l:file, l:lastdot + 1)
-        let l:srvname = GetSvrName(l:ext)
+		for noreitem in s:norelist 
+			if l:ext == noreitem
+				return 0
+			endif
+		endfor
+        let l:srvname = <SID>GetSvrName(l:ext)
         exe 'silent !start gvim --servername ' . l:srvname . ' --remote-tab-silent ' . shellescape(a, 1)
         call remote_foreground(l:srvname)
     endfor
     exit
 endfunction
 
-call VimDispatch()
+call <SID>VimDispatch()
 
 " }}}
 
@@ -83,14 +91,15 @@ endif
 "set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
 " set guifont=Anonymous:h10:cANSI
-set guifont=Monaco:h10:cANSI
+" set guifont=Monaco:h10:cANSI
 " set linespace=-3
 " set guifont=Anonymous_Pro:h8:cANSI
-" set guifont=PT_Mono:h8:cANSI
+set guifont=PT_Mono:h8:cANSI
 " set guifont=osaka_unicode:h10:cANSI
 " set guifont=Luxi_Mono:h9:cANSI
 " set guifont=fixed613
 " set guifont=Envy_Code_R:h9:cANSI
+" set guifont=Consolas:h9:cANSI
 set number
 set shiftwidth=4
 set cindent
@@ -103,7 +112,7 @@ set cursorline
 set tabstop=4
 set smarttab
 set shiftround
-set expandtab
+" set expandtab
 set autoindent
 set fileformats=dos,unix
 set nobackup
@@ -126,7 +135,7 @@ let s:termdiffcolor = 'default'
 " ------------------------------------------------------------------
 " Solarized Colorscheme Config
 " ------------------------------------------------------------------
-function SolarizedConfig()
+function! s:SolarizedConfig()
     let g:solarized_contrast='high'    "default value is normal
     let g:solarized_visibility='high'    "default value is normal
     let g:solarized_diffmode='high'    "default value is normal
@@ -153,12 +162,12 @@ endfunction
 if has('gui_running')
     if &diff
         if s:diffcolor == 'solarized'
-            call SolarizedConfig()
+            call <SID>SolarizedConfig()
         endif
         execute 'color ' . s:diffcolor
     else
         if s:color == 'solarized'
-            call SolarizedConfig()
+            call <SID>SolarizedConfig()
         endif
         execute 'color ' . s:color
     endif
@@ -189,7 +198,7 @@ endif
 
 " {{{ MyDiff()
 set diffexpr=MyDiff()
-function MyDiff()
+function! MyDiff()
   let opt = '-a --binary '
   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
   if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
@@ -201,7 +210,7 @@ function MyDiff()
   if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
   let eq = ''
   if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
+    if &sh =~ "\<cmd"
       let cmd = '""' . $VIMRUNTIME . '\diff"'
       let eq = '"'
     else
@@ -220,13 +229,13 @@ endfunction
 " custom functions
 "=====================================================================================
 
-function DebugRun(cmd)
+function! s:DebugRun(cmd)
     :w
     execute '! ' . a:cmd . ' %'
 endfunction
 
 "custom title
-function MyTitleLine()
+function! s:MyTitleLine()
     if match(v:servername, '^GVIM$') != -1
         "default server
         let l:servername = ''
@@ -237,7 +246,7 @@ function MyTitleLine()
     return line
 endfunction
 
-function MyCfile()
+function! s:MyCfile()
     let s:mycfile = expand('<cfile>')
     if !filereadable(s:mycfile)
         if strpart(s:mycfile, 0, 1) == '/' || strpart(s:mycfile, 0, 1) == '\\'
@@ -251,7 +260,7 @@ function MyCfile()
 endfunction
 
 "
-function MyJumpMyCfile()
+function! s:MyJumpMyCfile()
     let s:mycfile = expand('<cfile>')
     if filereadable(s:mycfile)
         exe 'tabe ' . s:mycfile
@@ -265,7 +274,7 @@ function MyJumpMyCfile()
     endif
 endfunction
 
-function MyOpenHttpLink()
+function! s:MyOpenHttpLink()
     if exists('g:internetbrowser')
         exe 'silent !start "' . g:internetbrowser . '" "' . expand('<cWORD>') . '"'
     endif
@@ -282,11 +291,9 @@ endfunction
 map <F3> :NERDTreeToggle<CR>
 map <F3> <Esc><Esc>:NERDTreeToggle<CR>
 
-" http://localhost/lf1210/
-nmap <F1> :tabp<CR>
-nmap <F2> :tabn<CR>
-imap <F1> <Esc><Esc>:tabp<CR>
-imap <F2> <Esc><Esc>:tabn<CR>
+" 
+map <F1> <C-PageUp>
+map <F2> <C-PageDown>
 
 nmap <Space> 15j
 nmap <S-Space> 15k
@@ -296,21 +303,21 @@ nmap d' vi'dhPl2x<Esc>
 nmap d" vi"dhPl2x<Esc>
 
 " CTRL+h/j/k/l to navigate between windows
-noremap <silent> <C-h> :wincmd h<CR>
-noremap <silent> <C-j> :wincmd j<CR>
-noremap <silent> <C-k> :wincmd k<CR>
-noremap <silent> <C-l> :wincmd l<CR>
-inoremap <silent> <C-h> <Esc>:wincmd h<CR>
-inoremap <silent> <C-j> <Esc>:wincmd j<CR>
-inoremap <silent> <C-k> <Esc>:wincmd k<CR>
-inoremap <silent> <C-l> <Esc>:wincmd l<CR>
+noremap <silent> <C-h> <C-W>h
+noremap <silent> <C-j> <C-W>j
+noremap <silent> <C-k> <C-W>k
+noremap <silent> <C-l> <C-W>l
+inoremap <silent> <C-h> <C-\><C-O><C-W>h
+inoremap <silent> <C-j> <C-\><C-O><C-W>j
+inoremap <silent> <C-k> <C-\><C-O><C-W>k
+inoremap <silent> <C-l> <C-\><C-O><C-W>l
 
 "double click to highlight all occurrances
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
 inoremap <silent> <2-LeftMouse> <esc>:let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
 nnoremap <silent> <3-LeftMouse> V
 
-nmap <silent> <MiddleMouse> <LeftMouse>:call MyJumpMyCfile()<cr>
+nmap <silent> <MiddleMouse> <LeftMouse>:call <SID>MyJumpMyCfile()<cr>
 
 map <leader>c <c-_><c-_>
 
@@ -329,6 +336,10 @@ nnoremap <c-s-n> /\V<c-r>"<cr>
 
 nnoremap =<space> =a}``
 
+nnoremap cu ct_
+
+iunmap <c-y>
+
 " }}}
 
 " {{{ autocommands
@@ -336,17 +347,39 @@ nnoremap =<space> =a}``
 " autocmds
 "=====================================================================================
 "php and python execution
-au FileType php map <F5> :call DebugRun('php')<cr>
-au FileType php imap <F5> <Esc>:call DebugRun('php')<cr>
-au FileType python map <F5> :call DebugRun('python')<cr>
-au FileType python imap <F5> <Esc>:call DebugRun('python')<cr>
+au FileType php map <F5> :call <SID>DebugRun('php')<cr>
+au FileType php imap <F5> <Esc>:call <SID>DebugRun('php')<cr>
+au FileType python map <F5> :call <SID>DebugRun('python')<cr>
+au FileType python imap <F5> <Esc>:call <SID>DebugRun('python')<cr>
 
 "title string
-au BufEnter     * let &titlestring = MyTitleLine()
-au BufReadPost  * let &titlestring = MyTitleLine()
-au BufWritePost * let &titlestring = MyTitleLine()
+au BufEnter     * let &titlestring = <SID>MyTitleLine()
+au BufReadPost  * let &titlestring = <SID>MyTitleLine()
+au BufWritePost * let &titlestring = <SID>MyTitleLine()
 
 au BufReadPost *.log :set nowrap | :set number
 "Automatically change current directory to that of the file in the buffer  
 au BufEnter * cd %:p:h
+" }}}
+
+" {{{ menus
+
+let s:keepcpo = &cpo
+set cpo&vim
+if has("menu") && has("gui_running") && &go =~# 'm' && !exists("s:mymenu")
+ let s:mymenu= 1
+  noremenu <silent> 11111.10 ★.\*Remove\ trailing\ spaces :g/\v^/s/\v\s+$//<CR>
+  noremenu <silent> 11111.20 ★.Compress\ empty\ lines :%s/\v\n{3,}/\r\r/g<CR>:%s/\v\n\n%$/\r/g<CR>
+  noremenu <silent> 11111.30 ★.\*Remove\ \^M :g/\v^/s/\v<C-V><CR>//<CR>
+  noremenu <silent> 11111.40 ★.-sep1- <Nop>
+  noremenu <silent> 11111.50 ★.CMD :!start cmd<CR>
+  noremenu <silent> 11111.60 ★.BASH :!start sh --login -i<CR>
+  noremenu <silent> 11111.70 ★.Explore :call Explore()<CR>
+  function Explore()
+	  exec 'silent !start explorer '.shellescape(expand('%:p:h'))
+  endfunction
+endif
+let &cpo=s:keepcpo
+unlet s:keepcpo
+
 " }}}
