@@ -81,7 +81,6 @@ if has('win32')
     source $VIMRUNTIME/vimrc_example.vim
     source $VIMRUNTIME/mswin.vim
     behave mswin
-    let g:internetbrowser = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 endif
 
 " }}}
@@ -116,7 +115,7 @@ set shiftround
 set autoindent
 set fileformats=dos,unix
 set nobackup
-set diffopt=filler,vertical
+set diffopt=filler ",vertical
 set grepprg=grep\ -nH
 
 let g:colorv_loaded = 1
@@ -128,6 +127,8 @@ let s:color = 'molokai'
 let s:diffcolor = 'molokaini'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
+
+" let g:html_indent_inctags = "html,body,head,tbody"
 
 " }}}
 
@@ -236,6 +237,10 @@ endfunction
 
 "custom title
 function! s:MyTitleLine()
+	if !exists('g:is_admin')
+		silent!!start net session
+		let g:is_admin = !v:shell_error
+	endif
     if match(v:servername, '^GVIM$') != -1
         "default server
         let l:servername = ''
@@ -243,6 +248,9 @@ function! s:MyTitleLine()
         let l:servername = v:servername
     endif
     let line =  "" . l:servername . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
+	if g:is_admin
+		let line .= ' #'
+	endif
     return line
 endfunction
 
@@ -275,9 +283,15 @@ function! s:MyJumpMyCfile()
 endfunction
 
 function! s:MyOpenHttpLink()
-    if exists('g:internetbrowser')
-        exe 'silent !start "' . g:internetbrowser . '" "' . expand('<cWORD>') . '"'
-    endif
+	call ShellOpen(expand('<cWORD>'))
+endfunction
+
+" open a url or file with associated program
+" http://vim.wikia.com/wiki/Open_a_web-browser_with_the_URL_in_the_current_line
+function! ShellOpen(url)
+	let l:old_reg=@"
+	exec 'silent!!start /b cmd /c start "" ' . shellescape(a:url) . ''
+	let @"=l:old_reg
 endfunction
 
 " }}}
@@ -383,3 +397,6 @@ let &cpo=s:keepcpo
 unlet s:keepcpo
 
 " }}}
+"
+
+execute pathogen#infect()
