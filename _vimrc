@@ -9,60 +9,60 @@
 " (or servers)
 " This must be done BEFORE ':set encoding=utf8' to make sure
 " the encoding of the filenames stay unchanged
-function! s:GetSvrName(ext)
-    if !exists('s:ext2srv')
-        let s:ext2srv = [
-                    \['VIM', ['vim']],
-                    \['PHP', ['php', 'phtml']],
-                    \['JS', ['js']],
-                    \['CSS', ['css']],
-                    \['HTML', ['htm', 'html', 'dwt', 'lbi']],
-                    \['PY', ['py']],
-                    \['TXT', ['txt', 'text', 'md', 'mkd']],
-                    \['C', ['c', 'cpp', 'h', 'hpp']],
-                    \['LOG', ['log']],
-                    \['INI', ['ini', 'conf']],
-                    \['BAT', ['bat', 'sh']],
-                    \]
-    endif
-    for srv in s:ext2srv 
-        for extname in srv[1]
-            if a:ext == extname
-                return srv[0]
-                " break
-            endif
-        endfor
-    endfor
-    return 'GVIM'
-endfunction
-
-function! s:VimDispatch()
-    if !exists('s:norelist')
-        let s:norelist = ['COMMIT_EDITMSG']
-    endif
-    if &diff || !argc()
-        return 0
-    endif
-    let l:argv = argv()
-    for a in l:argv
-        let l:sp = expand('/')
-        let l:lastsp = strridx(a, l:sp)
-        let l:file = strpart(a, l:lastsp + 1)
-        let l:lastdot = strridx(l:file, '.')
-        let l:ext = strpart(l:file, l:lastdot + 1)
-		for noreitem in s:norelist 
-			if l:ext == noreitem
-				return 0
-			endif
-		endfor
-        let l:srvname = <SID>GetSvrName(l:ext)
-        exe 'silent !start gvim --servername ' . l:srvname . ' --remote-tab-silent ' . shellescape(a, 1)
-        call remote_foreground(l:srvname)
-    endfor
-    exit
-endfunction
-
-call <SID>VimDispatch()
+" function! s:GetSvrName(ext)
+"     if !exists('s:ext2srv')
+"         let s:ext2srv = [
+"                     \['VIM', ['vim']],
+"                     \['PHP', ['php', 'phtml']],
+"                     \['JS', ['js']],
+"                     \['CSS', ['css']],
+"                     \['HTML', ['htm', 'html', 'dwt', 'lbi']],
+"                     \['PY', ['py']],
+"                     \['TXT', ['txt', 'text', 'md', 'mkd']],
+"                     \['C', ['c', 'cpp', 'h', 'hpp']],
+"                     \['LOG', ['log']],
+"                     \['INI', ['ini', 'conf']],
+"                     \['BAT', ['bat', 'sh']],
+"                     \]
+"     endif
+"     for srv in s:ext2srv 
+"         for extname in srv[1]
+"             if a:ext == extname
+"                 return srv[0]
+"                 " break
+"             endif
+"         endfor
+"     endfor
+"     return 'GVIM'
+" endfunction
+" 
+" function! s:VimDispatch()
+"     if !exists('s:norelist')
+"         let s:norelist = ['COMMIT_EDITMSG']
+"     endif
+"     if &diff || !argc()
+"         return 0
+"     endif
+"     let l:argv = argv()
+"     for a in l:argv
+"         let l:sp = expand('/')
+"         let l:lastsp = strridx(a, l:sp)
+"         let l:file = strpart(a, l:lastsp + 1)
+"         let l:lastdot = strridx(l:file, '.')
+"         let l:ext = strpart(l:file, l:lastdot + 1)
+" 		for noreitem in s:norelist 
+" 			if l:ext == noreitem
+" 				return 0
+" 			endif
+" 		endfor
+"         let l:srvname = <SID>GetSvrName(l:ext)
+"         exe 'silent !start gvim --servername ' . l:srvname . ' --remote-tab-silent ' . shellescape(a, 1)
+"         call remote_foreground(l:srvname)
+"     endfor
+"     exit
+" endfunction
+" 
+" call <SID>VimDispatch()
 
 " }}}
 
@@ -75,7 +75,7 @@ let $LANG='en'
 set guioptions+=Lr
 set guioptions-=T
 set encoding=utf8
-set fileencodings=utf8,cp936,latin1
+set fileencodings=utf8,utf16,cp936,latin1
 set nocompatible
 if has('win32')
     source $VIMRUNTIME/vimrc_example.vim
@@ -87,13 +87,12 @@ endif
 
 " {{{ general options, font, colorscheme
 "set guifont=ProggyTinyBP:h7
-"set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
 " set guifont=Anonymous:h10:cANSI
-" set guifont=Monaco:h10:cANSI
-" set linespace=-3
+set guifont=Monaco:h10:cANSI
+set linespace=-3
 " set guifont=Anonymous_Pro:h8:cANSI
-set guifont=PT_Mono:h8:cANSI
+" set guifont=PT_Mono:h10:cANSI
 " set guifont=osaka_unicode:h10:cANSI
 " set guifont=Luxi_Mono:h9:cANSI
 " set guifont=fixed613
@@ -115,7 +114,7 @@ set shiftround
 set autoindent
 set fileformats=dos,unix
 set nobackup
-set diffopt=filler ",vertical
+set diffopt=filler,horizontal
 set grepprg=grep\ -nH
 
 let g:colorv_loaded = 1
@@ -123,7 +122,7 @@ let g:colorv_loaded = 1
 " let php_folding = 1
 let mapleader=','
 
-let s:color = 'molokai'
+let s:color = 'sbling'
 let s:diffcolor = 'molokaini'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
@@ -238,18 +237,21 @@ endfunction
 "custom title
 function! s:MyTitleLine()
 	if !exists('g:is_admin')
-		silent!!start net session
-		let g:is_admin = !v:shell_error
+        let g:is_admin = (filewritable($windir . '/system32/drivers'))
 	endif
-    if match(v:servername, '^GVIM$') != -1
-        "default server
-        let l:servername = ''
-    else
-        let l:servername = v:servername
-    endif
-    let line =  "" . l:servername . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
+    " if match(v:servername, '^GVIM$') != -1
+    "     "default server
+    "     let l:servername = ''
+    " else
+    "     let l:servername = v:servername
+    " endif
+    " let line =  "" . l:servername . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
+    let line =  "" . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
+	if &diff
+		let line .= 'DIFF'
+	endif
 	if g:is_admin
-		let line .= ' #'
+        let line .= ' #'
 	endif
     return line
 endfunction
@@ -386,8 +388,8 @@ if has("menu") && has("gui_running") && &go =~# 'm' && !exists("s:mymenu")
   noremenu <silent> 11111.20 ★.Compress\ empty\ lines :%s/\v\n{3,}/\r\r/g<CR>:%s/\v\n\n%$/\r/g<CR>
   noremenu <silent> 11111.30 ★.\*Remove\ \^M :g/\v^/s/\v<C-V><CR>//<CR>
   noremenu <silent> 11111.40 ★.-sep1- <Nop>
-  noremenu <silent> 11111.50 ★.CMD :!start cmd<CR>
-  noremenu <silent> 11111.60 ★.BASH :!start sh --login -i<CR>
+  noremenu <silent> 11111.50 ★.CMD :silent!!start cmd<CR>
+  noremenu <silent> 11111.60 ★.BASH :silent!!start sh --login -i<CR>
   noremenu <silent> 11111.70 ★.Explore :call Explore()<CR>
   function Explore()
 	  exec 'silent !start explorer '.shellescape(expand('%:p:h'))
