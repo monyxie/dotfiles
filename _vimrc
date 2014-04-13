@@ -122,7 +122,7 @@ let g:colorv_loaded = 1
 " let php_folding = 1
 let mapleader=','
 
-let s:color = 'sbling'
+let s:color = 'molokai'
 let s:diffcolor = 'molokaini'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
