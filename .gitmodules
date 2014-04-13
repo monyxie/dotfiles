@@ -1,3 +1,27 @@
 [submodule "vimfiles/bundle/nerdtree"]
 	path = vimfiles/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
+[submodule "vimfiles/bundle/vim-colors-solarized"]
+	path = vimfiles/bundle/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule "vimfiles/bundle/tlib_vim"]
+	path = vimfiles/bundle/tlib_vim
+	url = https://github.com/tomtom/tlib_vim.git
+[submodule "vimfiles/bundle/vim-addon-mw-utils"]
+	path = vimfiles/bundle/vim-addon-mw-utils
+	url = https://github.com/MarcWeber/vim-addon-mw-utils.git
+[submodule "vimfiles/bundle/vim-snipmate"]
+	path = vimfiles/bundle/vim-snipmate
+	url = https://github.com/garbas/vim-snipmate.git
+[submodule "vimfiles/bundle/vim-projectile"]
+	path = vimfiles/bundle/vim-projectile
+	url = https://github.com/tpope/vim-projectile.git
+[submodule "vimfiles/bundle/vim-surround"]
+	path = vimfiles/bundle/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vimfiles/bundle/vim-snippets"]
+	path = vimfiles/bundle/vim-snippets
+	url = https://github.com/honza/vim-snippets.git
+[submodule "vimfiles/bundle/vim-fugitive"]
+	path = vimfiles/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
