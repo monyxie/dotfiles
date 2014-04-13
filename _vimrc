@@ -122,7 +122,7 @@ let g:colorv_loaded = 1
 " let php_folding = 1
 let mapleader=','
 
-let s:color = 'molokai'
+let s:color = 'solarized'
 let s:diffcolor = 'molokaini'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
@@ -141,7 +141,7 @@ function! s:SolarizedConfig()
     let g:solarized_diffmode='high'    "default value is normal
     let g:solarized_hitrail=1    "default value is 0
     "syntax enable
-    set background=light
+    set background=dark
     "colorscheme solarized
     " ------------------------------------------------------------------
     " The following items are available options, but do not need to be
@@ -155,29 +155,6 @@ function! s:SolarizedConfig()
     " let g:solarized_termcolors=16
     " let g:solarized_menu=1
 endfunction
-
-" ------------------------------------------------------------------
-" Colorscheme Config
-" ------------------------------------------------------------------
-if has('gui_running')
-    if &diff
-        if s:diffcolor == 'solarized'
-            call <SID>SolarizedConfig()
-        endif
-        execute 'color ' . s:diffcolor
-    else
-        if s:color == 'solarized'
-            call <SID>SolarizedConfig()
-        endif
-        execute 'color ' . s:color
-    endif
-else "no gui
-    if &diff
-        execute 'color ' . s:termdiffcolor
-    else
-        execute 'color ' . s:termcolor
-    endif
-endif
 
 " }}}
 
@@ -402,3 +379,27 @@ unlet s:keepcpo
 "
 
 execute pathogen#infect()
+
+" ------------------------------------------------------------------
+" Set color scheme
+" ------------------------------------------------------------------
+if has('gui_running')
+    if &diff
+        if s:diffcolor == 'solarized'
+            call <SID>SolarizedConfig()
+        endif
+        execute 'color ' . s:diffcolor
+    else
+        if s:color == 'solarized'
+            call <SID>SolarizedConfig()
+        endif
+        execute 'color ' . s:color
+    endif
+else "no gui
+    if &diff
+        execute 'color ' . s:termdiffcolor
+    else
+        execute 'color ' . s:termcolor
+    endif
+endif
+
