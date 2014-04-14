@@ -123,7 +123,7 @@ let g:colorv_loaded = 1
 let mapleader=','
 
 let s:color = 'solarized'
-let s:diffcolor = 'molokaini'
+let s:diffcolor = 'solarized'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
 
