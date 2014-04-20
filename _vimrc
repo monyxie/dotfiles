@@ -363,7 +363,7 @@ if has("menu") && has("gui_running") && &go =~# 'm' && !exists("s:mymenu")
  let s:mymenu= 1
   noremenu <silent> 11111.10 ★.\*Remove\ trailing\ spaces :g/\v^/s/\v\s+$//<CR>
   noremenu <silent> 11111.20 ★.Compress\ empty\ lines :%s/\v\n{3,}/\r\r/g<CR>:%s/\v\n\n%$/\r/g<CR>
-  noremenu <silent> 11111.30 ★.\*Remove\ \^M :g/\v^/s/\v<C-V><CR>//<CR>
+  noremenu <silent> 11111.30 ★.\*Remove\ \^M :g/\v^/s/\v<C-V><CR>//<CR>``
   noremenu <silent> 11111.40 ★.-sep1- <Nop>
   noremenu <silent> 11111.50 ★.CMD :silent!!start cmd<CR>
   noremenu <silent> 11111.60 ★.BASH :silent!!start sh --login -i<CR>
