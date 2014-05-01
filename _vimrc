@@ -169,6 +169,8 @@ let g:snips_author = 'Mony Xie'
 if &diff
     set lines=999
     set columns=999
+	" ignore whitespaces in diff mode
+	set diffopt+=iwhite
 endif
 
 " }}}
@@ -352,7 +354,7 @@ au BufWritePost * let &titlestring = <SID>MyTitleLine()
 
 au BufReadPost *.log :set nowrap | :set number
 "Automatically change current directory to that of the file in the buffer  
-au BufEnter * cd %:p:h
+au BufEnter * sil! cd %:p:h
 " }}}
 
 " {{{ menus
