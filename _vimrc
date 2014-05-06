@@ -362,32 +362,42 @@ au BufEnter * sil! cd %:p:h
 let s:keepcpo = &cpo
 set cpo&vim
 if has("menu") && has("gui_running") && &go =~# 'm' && !exists("s:mymenu")
- let s:mymenu= 1
-  anoremenu <silent> 11111.01 ★.Select\ All :normal ggVG<CR>
-  anoremenu <silent> 11111.05 ★.-sep1- <Nop>
-  anoremenu <silent> 11111.10 ★.\*Remove\ trailing\ spaces :g/\v^/s/\v\s+$//<CR>
-  anoremenu <silent> 11111.20 ★.Compress\ empty\ lines :call <sid>CompressEL()<CR>
-  anoremenu <silent> 11111.30 ★.\*Remove\ \^M :g/\v^/s/\v<C-V><CR>//<CR>``
-  anoremenu <silent> 11111.35 ★.\*Delete\ matched :g//d<CR>
-  anoremenu <silent> 11111.35 ★.\*Delete\ unmatched :v//d<CR>
-  anoremenu <silent> 11111.35 ★.\*Join\ begin\ w/o :call JoinBeginWo()<CR>
-  anoremenu <silent> 11111.40 ★.-sep2- <Nop>
-  anoremenu <silent> 11111.50 ★.CMD :silent!!start cmd<CR>
-  anoremenu <silent> 11111.60 ★.BASH :silent!!start sh --login -i<CR>
-  anoremenu <silent> 11111.70 ★.Explore :call <sid>Explore()<CR>
-  function s:GenerateSeq(begin, end, step)
-  endfunction
-  function s:JoinBeginWo()
-	  silent! exec '%s/\v\n(' . histget('search', -1) . '\v)@!'
-  endfunction
-  function s:CompressEL()
-	  silent! exec '%s/\v%^\n+/\r/g'
-	  silent! exec '%s/\v\n+%$/\r/g'
-	  silent! exec '%s/\v\n{2}\zs\n+//g'
-  endfunction
-  function s:Explore()
-	  silent exec '!start explorer '.shellescape(expand('%:p:h'))
-  endfunction
+	let s:mymenu= 1
+	anoremenu <silent> 11111 ★.Select\ All :normal ggVG<CR>
+	anoremenu <silent> 11111 ★.-sep1- <Nop>
+	anoremenu <silent> 11111 ★.\*Remove\ Trailing\ Spaces :g/\v^/s/\v\s+$//<CR>
+	anoremenu <silent> 11111 ★.Compress\ Empty\ Lines :call <sid>CompressEL()<CR>
+	anoremenu <silent> 11111 ★.\*Remove\ \^M :g/\v^/s/\v<C-V><CR>//<CR>``
+	anoremenu <silent> 11111 ★.\*Delete\ Matched\ Lines :g//d<CR>
+	anoremenu <silent> 11111 ★.\*Delete\ Unmatched\ Lines :v//d<CR>
+	anoremenu <silent> 11111 ★.\*Join\ Lines\ Begin\ w/o :call <sid>JoinBeginWo()<CR>
+	anoremenu <silent> 11111 ★.\*Generate\ Sequence :call <sid>GenerateSeq()<CR>
+	anoremenu <silent> 11111 ★.-sep2- <Nop>
+	anoremenu <silent> 11111 ★.CMD :silent!!start cmd<CR>
+	anoremenu <silent> 11111 ★.BASH :silent!!start sh --login -i<CR>
+	anoremenu <silent> 11111 ★.Explore :call <sid>Explore()<CR>
+	function s:GenerateSeq()
+		let l:p = inputdialog('range() arguments:', 10, 0)
+		let l:lp = split(l:p)
+		if l:lp[0] == 0
+			return
+		endif
+		let l:a = @a
+		let @a = join(call('range', l:lp), nr2char(10))
+		put a
+		let @a = l:a
+	endfunction
+	function s:JoinBeginWo()
+		silent! exec '%s/\v\n(' . getreg('/') . '\v)@!'
+	endfunction
+	function s:CompressEL()
+		silent! exec '%s/\v%^\n+/\r/g'
+		silent! exec '%s/\v\n+%$/\r/g'
+		silent! exec '%s/\v\n{2}\zs\n+//g'
+	endfunction
+	function s:Explore()
+		silent exec '!start explorer '.shellescape(expand('%:p:h'))
+	endfunction
 endif
 let &cpo=s:keepcpo
 unlet s:keepcpo
