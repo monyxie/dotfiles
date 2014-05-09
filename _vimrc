@@ -210,7 +210,7 @@ endfunction
 
 function! s:DebugRun(cmd)
     :w
-    execute '! ' . a:cmd . ' %'
+    execute 'silent!!' . a:cmd . ' %'
 endfunction
 
 "custom title
