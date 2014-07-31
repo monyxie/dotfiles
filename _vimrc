@@ -3,69 +3,6 @@
 
 " vim:fdm=marker
 
-
-" {{{ VimDispatch
-" Open files of different types in seperated vim instances
-" (or servers)
-" This must be done BEFORE ':set encoding=utf8' to make sure
-" the encoding of the filenames stay unchanged
-" function! s:GetSvrName(ext)
-"     if !exists('s:ext2srv')
-"         let s:ext2srv = [
-"                     \['VIM', ['vim']],
-"                     \['PHP', ['php', 'phtml']],
-"                     \['JS', ['js']],
-"                     \['CSS', ['css']],
-"                     \['HTML', ['htm', 'html', 'dwt', 'lbi']],
-"                     \['PY', ['py']],
-"                     \['TXT', ['txt', 'text', 'md', 'mkd']],
-"                     \['C', ['c', 'cpp', 'h', 'hpp']],
-"                     \['LOG', ['log']],
-"                     \['INI', ['ini', 'conf']],
-"                     \['BAT', ['bat', 'sh']],
-"                     \]
-"     endif
-"     for srv in s:ext2srv 
-"         for extname in srv[1]
-"             if a:ext == extname
-"                 return srv[0]
-"                 " break
-"             endif
-"         endfor
-"     endfor
-"     return 'GVIM'
-" endfunction
-" 
-" function! s:VimDispatch()
-"     if !exists('s:norelist')
-"         let s:norelist = ['COMMIT_EDITMSG']
-"     endif
-"     if &diff || !argc()
-"         return 0
-"     endif
-"     let l:argv = argv()
-"     for a in l:argv
-"         let l:sp = expand('/')
-"         let l:lastsp = strridx(a, l:sp)
-"         let l:file = strpart(a, l:lastsp + 1)
-"         let l:lastdot = strridx(l:file, '.')
-"         let l:ext = strpart(l:file, l:lastdot + 1)
-" 		for noreitem in s:norelist 
-" 			if l:ext == noreitem
-" 				return 0
-" 			endif
-" 		endfor
-"         let l:srvname = <SID>GetSvrName(l:ext)
-"         exe 'silent !start gvim --servername ' . l:srvname . ' --remote-tab-silent ' . shellescape(a, 1)
-"         call remote_foreground(l:srvname)
-"     endfor
-"     exit
-" endfunction
-" 
-" call <SID>VimDispatch()
-
-" }}}
-
 " {{{ lang, enc, guiopt, cp and behavior
 "====================================================================
 "some options need to be set earlier
@@ -110,7 +47,7 @@ set cursorline
 set tabstop=4
 set smarttab
 set shiftround
-" set expandtab
+set expandtab
 set autoindent
 set fileformats=dos,unix
 set nobackup
@@ -119,7 +56,8 @@ set grepprg=grep\ -nH
 
 let g:colorv_loaded = 1
 " let php_sql_query = 1
-" let php_folding = 1
+let php_folding = 1
+set foldmethod=manual
 let mapleader=','
 
 let s:color = 'solarized'
@@ -141,7 +79,7 @@ function! s:SolarizedConfig()
     let g:solarized_diffmode='high'    "default value is normal
     let g:solarized_hitrail=1    "default value is 0
     "syntax enable
-    set background=dark
+    set background=light
     "colorscheme solarized
     " ------------------------------------------------------------------
     " The following items are available options, but do not need to be
@@ -307,6 +245,9 @@ inoremap <silent> <C-j> <C-\><C-O><C-W>j
 inoremap <silent> <C-k> <C-\><C-O><C-W>k
 inoremap <silent> <C-l> <C-\><C-O><C-W>l
 
+" CTRL+BACKSPACE to delete one word in insert mode
+inoremap <C-bs> <C-o>ciw
+
 "double click to highlight all occurrances
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
 inoremap <silent> <2-LeftMouse> <esc>:let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
@@ -327,7 +268,7 @@ noremap <a-5> /<up><up><up><up><up><cr>
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]l'
 
 " ctrl-shift-n to search recently modified/deleted text(" register)
-nnoremap <c-s-n> :exec '/\V' . escape(getreg('"'), '\/')<CR>
+nnoremap <c-s-n> :call setreg('/', '\V' . escape(getreg('"'), '\/'))<cr>n
 
 nnoremap =<space> =a}``
 
