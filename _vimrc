@@ -26,15 +26,16 @@ endif
 "set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
 " set guifont=Anonymous:h10:cANSI
-set guifont=Monaco:h10:cANSI
-set linespace=-3
+" set guifont=Monaco:h10:cANSI
+" set linespace=-3
 " set guifont=Anonymous_Pro:h8:cANSI
-" set guifont=PT_Mono:h10:cANSI
+set guifont=PT_Mono:h10:cANSI
 " set guifont=osaka_unicode:h10:cANSI
 " set guifont=Luxi_Mono:h9:cANSI
 " set guifont=fixed613
 " set guifont=Envy_Code_R:h9:cANSI
 " set guifont=Consolas:h9:cANSI
+" set guifont=NSimsun:h9:cANSI
 set number
 set shiftwidth=4
 set cindent
@@ -47,7 +48,7 @@ set cursorline
 set tabstop=4
 set smarttab
 set shiftround
-set expandtab
+set noexpandtab
 set autoindent
 set fileformats=dos,unix
 set nobackup
@@ -66,6 +67,13 @@ let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
 
 " let g:html_indent_inctags = "html,body,head,tbody"
+let g:syntastic_javascript_checkers = ['jshint']
+
+" let g:vdebug_options = {
+" \ 'path_maps': {},
+" \ 'server': '0.0.0.0'
+" \}
+
 
 " }}}
 
@@ -79,7 +87,7 @@ function! s:SolarizedConfig()
     let g:solarized_diffmode='high'    "default value is normal
     let g:solarized_hitrail=1    "default value is 0
     "syntax enable
-    set background=light
+    set background=dark
     "colorscheme solarized
     " ------------------------------------------------------------------
     " The following items are available options, but do not need to be
@@ -283,11 +291,11 @@ iunmap <c-y>
 " autocmds
 "=====================================================================================
 "php and python execution
-au FileType php map <F5> :call <SID>DebugRun('php')<cr>
-au FileType php imap <F5> <Esc>:call <SID>DebugRun('php')<cr>
-au FileType python map <F5> :call <SID>DebugRun('python')<cr>
-au FileType python imap <F5> <Esc>:call <SID>DebugRun('python')<cr>
-
+" au FileType php map <F5> :call <SID>DebugRun('php')<cr>
+" au FileType php imap <F5> <Esc>:call <SID>DebugRun('php')<cr>
+" au FileType python map <F5> :call <SID>DebugRun('python')<cr>
+" au FileType python imap <F5> <Esc>:call <SID>DebugRun('python')<cr>
+"
 "title string
 au BufEnter     * let &titlestring = <SID>MyTitleLine()
 au BufReadPost  * let &titlestring = <SID>MyTitleLine()
