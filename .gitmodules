@@ -63,3 +63,9 @@
 [submodule "vimfiles/bundle/colorschemes"]
 	path = vimfiles/bundle/colorschemes
 	url = https://github.com/flazz/vim-colorschemes.git
+[submodule "vimfiles/bundle/neocomplcache.vim"]
+	path = vimfiles/bundle/neocomplcache.vim
+	url = https://github.com/Shougo/neocomplcache.vim.git
+[submodule "vimfiles/bundle/ctrlp.vim"]
+	path = vimfiles/bundle/ctrlp.vim
+	url = https://github.com/kien/ctrlp.vim.git
