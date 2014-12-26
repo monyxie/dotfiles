@@ -54,6 +54,9 @@ set fileformats=dos,unix
 set nobackup
 set diffopt=filler,horizontal
 set grepprg=grep\ -nH
+set iminsert=0
+set imsearch=0
+set rnu
 
 let g:colorv_loaded = 1
 " let php_sql_query = 1
@@ -87,7 +90,7 @@ function! s:SolarizedConfig()
     let g:solarized_diffmode='high'    "default value is normal
     let g:solarized_hitrail=1    "default value is 0
     "syntax enable
-    set background=dark
+    set background=light
     "colorscheme solarized
     " ------------------------------------------------------------------
     " The following items are available options, but do not need to be
@@ -284,6 +287,22 @@ nnoremap cu ct_
 
 iunmap <c-y>
 
+nmap <c-w> :tabclose<cr>
+
+" nnoremap <c-s-v> "-gP
+" vnoremap <c-s-v> "-gP
+" inoremap <c-s-v> <c-o>"-gP
+
+nnoremap <c-d> <LeftMouse>gelve
+inoremap <c-d> <Esc><LeftMouse>gelve
+vnoremap <c-d> <Esc><LeftMouse>gElvE
+snoremap <c-d> <c-g>gElvE
+
+" JsBeautify
+autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+
 " }}}
 
 " {{{ autocommands
@@ -316,7 +335,7 @@ if has("menu") && has("gui_running") && &go =~# 'm' && !exists("s:mymenu")
 	anoremenu <silent> 11111 ★.-sep1- <Nop>
 	anoremenu <silent> 11111 ★.\*Remove\ Trailing\ Spaces :g/\v^/s/\v\s+$//<CR>
 	anoremenu <silent> 11111 ★.Compress\ Empty\ Lines :call <sid>CompressEL()<CR>
-	anoremenu <silent> 11111 ★.\*Remove\ \^M :g/\v^/s/\v<C-V><CR>//<CR>``
+	anoremenu <silent> 11111 ★.\Remove\ \^M :%s/\v<C-V><CR>//<CR>``
 	anoremenu <silent> 11111 ★.\*Delete\ Matched\ Lines :g//d<CR>
 	anoremenu <silent> 11111 ★.\*Delete\ Unmatched\ Lines :v//d<CR>
 	anoremenu <silent> 11111 ★.\*Join\ Lines\ Begin\ w/o :call <sid>JoinBeginWo()<CR>
