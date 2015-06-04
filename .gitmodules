@@ -84,3 +84,9 @@
 [submodule "vimfiles/bundle/tagbar"]
 	path = vimfiles/bundle/tagbar
 	url = git://github.com/majutsushi/tagbar
+[submodule "vimfiles/bundle/vim-javascript"]
+	path = vimfiles/bundle/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "vimfiles/bundle/vim-jsx"]
+	path = vimfiles/bundle/vim-jsx
+	url = https://github.com/mxw/vim-jsx.git
