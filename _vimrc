@@ -283,8 +283,6 @@ nnoremap =<space> =a}``
 
 nnoremap cu ct_
 
-iunmap <c-y>
-
 nnoremap <c-d> <LeftMouse>gelve
 inoremap <c-d> <Esc><LeftMouse>gelve
 vnoremap <c-d> <Esc><LeftMouse>gElvE
