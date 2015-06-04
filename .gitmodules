@@ -78,9 +78,6 @@
 [submodule "vimfiles/bundle/minibufexpl.vim"]
 	path = vimfiles/bundle/minibufexpl.vim
 	url = https://github.com/fholgado/minibufexpl.vim.git
-[submodule "vimfiles/bundle/vim-jsbeautify"]
-	path = vimfiles/bundle/vim-jsbeautify
-	url = https://github.com/maksimr/vim-jsbeautify.git
 [submodule "vimfiles/bundle/tagbar"]
 	path = vimfiles/bundle/tagbar
 	url = git://github.com/majutsushi/tagbar
