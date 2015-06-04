@@ -1,8 +1,8 @@
 #.gitignore
-vim73
-vim74
-vim74clean
-*.swp
-*~
-download
-_viminfo
+-misc/
+-vimfiles/
+-_vimrc
+-.gitignore
+-.gitmodules
+-README.md
+*

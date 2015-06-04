@@ -25,10 +25,12 @@ endif
 " {{{ general options, font, colorscheme
 "set guifont=ProggyTinyBP:h7
 "set guifont=Lucida_Console:h9:cANSI
-" set guifont=Anonymous:h10:cANSI
+" set guifont=Anonymous:h8:cANSI
 " set guifont=Monaco:h10:cANSI
-" set linespace=-3
-" set guifont=Anonymous_Pro:h8:cANSI
+" set linespace=-2
+" set guifont=Anonymous_Pro:h10:cANSI
+" set guifont=Anonymice_Powerline:h10:cANSI
+" set guifont=monofur_for_Powerline:h10:cANSI
 set guifont=PT_Mono:h10:cANSI
 " set guifont=osaka_unicode:h10:cANSI
 " set guifont=Luxi_Mono:h9:cANSI
@@ -56,15 +58,16 @@ set diffopt=filler,horizontal
 set grepprg=grep\ -nH
 set iminsert=0
 set imsearch=0
-set rnu
+set laststatus=2
+" set rnu
 
 let g:colorv_loaded = 1
 " let php_sql_query = 1
-let php_folding = 1
-set foldmethod=manual
+" let php_folding = 1
+" set foldmethod=manual
 let mapleader=','
 
-let s:color = 'solarized'
+let s:color = 'darkblue'
 let s:diffcolor = 'solarized'
 let s:termcolor = 'default'
 let s:termdiffcolor = 'default'
@@ -90,7 +93,7 @@ function! s:SolarizedConfig()
     let g:solarized_diffmode='high'    "default value is normal
     let g:solarized_hitrail=1    "default value is 0
     "syntax enable
-    set background=light
+    set background=dark
     "colorscheme solarized
     " ------------------------------------------------------------------
     " The following items are available options, but do not need to be
@@ -114,6 +117,13 @@ let g:indent_guides_enable_on_vim_startup = 1
 
 "SnipMate
 let g:snips_author = 'Mony Xie'
+
+"airline
+" let g:airline_powerline_fonts = 1
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline_theme='powerlineish'
+
 
 if &diff
     set lines=999
@@ -232,19 +242,7 @@ endfunction
 "=====================================================================================
 
 "nerdtree
-map <F3> :NERDTreeToggle<CR>
 map <F3> <Esc><Esc>:NERDTreeToggle<CR>
-
-" 
-map <F1> <C-PageUp>
-map <F2> <C-PageDown>
-
-nmap <Space> 15j
-nmap <S-Space> 15k
-
-
-nmap d' vi'dhPl2x<Esc>
-nmap d" vi"dhPl2x<Esc>
 
 " CTRL+h/j/k/l to navigate between windows
 noremap <silent> <C-h> <C-W>h
@@ -260,8 +258,8 @@ inoremap <silent> <C-l> <C-\><C-O><C-W>l
 inoremap <C-bs> <C-o>ciw
 
 "double click to highlight all occurrances
-nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
-inoremap <silent> <2-LeftMouse> <esc>:let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw<c-g>
+nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw
+inoremap <silent> <2-LeftMouse> <esc>:let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw
 nnoremap <silent> <3-LeftMouse> V
 
 nmap <silent> <MiddleMouse> <LeftMouse>:call <SID>MyJumpMyCfile()<cr>
@@ -287,16 +285,15 @@ nnoremap cu ct_
 
 iunmap <c-y>
 
-nmap <c-w> :tabclose<cr>
-
-" nnoremap <c-s-v> "-gP
-" vnoremap <c-s-v> "-gP
-" inoremap <c-s-v> <c-o>"-gP
-
 nnoremap <c-d> <LeftMouse>gelve
 inoremap <c-d> <Esc><LeftMouse>gelve
 vnoremap <c-d> <Esc><LeftMouse>gElvE
 snoremap <c-d> <c-g>gElvE
+
+nmap <leader>v :execute getline(".")<cr>
+
+nmap <f2> :Tagbar<cr>
+imap <f2> <Esc>:Tagbar<cr>
 
 " JsBeautify
 autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
@@ -309,11 +306,6 @@ autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 "=====================================================================================
 " autocmds
 "=====================================================================================
-"php and python execution
-" au FileType php map <F5> :call <SID>DebugRun('php')<cr>
-" au FileType php imap <F5> <Esc>:call <SID>DebugRun('php')<cr>
-" au FileType python map <F5> :call <SID>DebugRun('python')<cr>
-" au FileType python imap <F5> <Esc>:call <SID>DebugRun('python')<cr>
 "
 "title string
 au BufEnter     * let &titlestring = <SID>MyTitleLine()
