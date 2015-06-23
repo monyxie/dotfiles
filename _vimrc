@@ -31,7 +31,7 @@ endif
 " set guifont=Anonymous_Pro:h10:cANSI
 " set guifont=Anonymice_Powerline:h10:cANSI
 " set guifont=monofur_for_Powerline:h10:cANSI
-set guifont=PT_Mono:h10:cANSI
+set guifont=PT_Mono:h12
 " set guifont=osaka_unicode:h10:cANSI
 " set guifont=Luxi_Mono:h9:cANSI
 " set guifont=fixed613
@@ -39,19 +39,19 @@ set guifont=PT_Mono:h10:cANSI
 " set guifont=Consolas:h9:cANSI
 " set guifont=NSimsun:h9:cANSI
 set number
-set shiftwidth=4
-set cindent
-set smartindent
-set wrap
 set columns=128
 set lines=48
+set shiftwidth=2
+set softtabstop=2
+set shiftround
+set expandtab
+set cindent
+set smartindent
+" set autoindent
+set wrap
 set hlsearch
 set cursorline
-set tabstop=4
-set smarttab
-set shiftround
-set noexpandtab
-set autoindent
+" set smarttab
 set fileformats=dos,unix
 set nobackup
 set diffopt=filler,horizontal
@@ -67,9 +67,9 @@ let g:colorv_loaded = 1
 " set foldmethod=manual
 let mapleader=','
 
-let s:color = 'darkblue'
+let s:color = 'solarized'
 let s:diffcolor = 'solarized'
-let s:termcolor = 'default'
+let s:termcolor = 'molokai'
 let s:termdiffcolor = 'default'
 
 " let g:html_indent_inctags = "html,body,head,tbody"
@@ -294,9 +294,9 @@ nmap <f2> :Tagbar<cr>
 imap <f2> <Esc>:Tagbar<cr>
 
 " JsBeautify
-autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
-autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
-autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+" autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+" autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+" autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 
 " }}}
 
@@ -312,7 +312,7 @@ au BufWritePost * let &titlestring = <SID>MyTitleLine()
 
 au BufReadPost *.log :set nowrap | :set number
 "Automatically change current directory to that of the file in the buffer  
-au BufEnter * sil! cd %:p:h
+"au BufEnter * sil! cd %:p:h
 " }}}
 
 " {{{ menus
@@ -388,3 +388,5 @@ else "no gui
     endif
 endif
 
+syntax on
+filetype plugin indent on
