@@ -31,7 +31,7 @@ endif
 " set guifont=Anonymous_Pro:h10:cANSI
 " set guifont=Anonymice_Powerline:h10:cANSI
 " set guifont=monofur_for_Powerline:h10:cANSI
-set guifont=PT_Mono:h12
+set guifont=PT\ Mono\ 12
 " set guifont=osaka_unicode:h10:cANSI
 " set guifont=Luxi_Mono:h9:cANSI
 " set guifont=fixed613
@@ -39,8 +39,13 @@ set guifont=PT_Mono:h12
 " set guifont=Consolas:h9:cANSI
 " set guifont=NSimsun:h9:cANSI
 set number
-set columns=128
-set lines=48
+
+" don't set window cols and rows in console
+if has('gui_running')
+  set columns=128
+  set lines=30
+endif
+
 set shiftwidth=2
 set softtabstop=2
 set shiftround
@@ -67,7 +72,7 @@ let g:colorv_loaded = 1
 " set foldmethod=manual
 let mapleader=','
 
-let s:color = 'solarized'
+let s:color = 'zenburn'
 let s:diffcolor = 'solarized'
 let s:termcolor = 'molokai'
 let s:termdiffcolor = 'default'
