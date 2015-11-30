@@ -42,14 +42,25 @@ set number
 
 " don't set window cols and rows in console
 if has('gui_running')
-  set columns=128
+set columns=128
   set lines=30
 endif
 
+set tabstop=2
+
+" Number of spaces to use for each step of (auto)indent.  Used for
+" |'cindent'|, |>>|, |<<|, etc.
+" When zero the 'ts' value will be used.
 set shiftwidth=2
-set softtabstop=2
-set shiftround
-set expandtab
+
+" numbers of spaces a <Tab> inserts when editing, 0 to disable
+" set softtabstop=2
+
+" Round indent to multiple of 'shiftwidth'.  Applies to > and <
+" set shiftround
+
+"set expandtab
+
 set cindent
 set smartindent
 " set autoindent
