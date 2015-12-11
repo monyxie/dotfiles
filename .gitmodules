@@ -57,9 +57,6 @@
 	path = vimfiles/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
 	ignore = dirty
-[submodule "vimfiles/bundle/vdebug"]
-	path = vimfiles/bundle/vdebug
-	url = git://github.com/joonty/vdebug.git
 [submodule "vimfiles/bundle/colorschemes"]
 	path = vimfiles/bundle/colorschemes
 	url = https://github.com/flazz/vim-colorschemes.git
