@@ -1,0 +1,13 @@
+[user]
+  email = monyxie@gmail.com
+  name = Mony Xie
+[push]
+  default = simple
+[alias]
+  s = status
+  d = diff
+  p = pull
+  ci = commit
+  co = checkout
+  b = branch
+  l = log --oneline
