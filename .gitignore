@@ -1,9 +1,1 @@
 #.gitignore
--misc/
--vimfiles/
--_vimrc
--gvimrc
--.gitignore
--.gitmodules
--README.md
-*
