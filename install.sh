@@ -1,3 +1,3 @@
-#!/usr/bin/sh
-ln -s ./.vimrc ~/.vimrc
-ln -s ./.tmux.conf ~/.vimrc
+#!/bin/bash
+ln -s -r ./.vimrc ~/.vimrc
+ln -s -r ./.tmux.conf ~/.tmux.conf
