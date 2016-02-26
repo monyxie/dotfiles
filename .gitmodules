@@ -38,10 +38,6 @@
 	path = vimfiles/bundle/Align
 	url = https://github.com/vim-scripts/Align.git
 	ignore = dirty
-[submodule "vimfiles/bundle/vim-indent-guides"]
-	path = vimfiles/bundle/vim-indent-guides
-	url = https://github.com/nathanaelkane/vim-indent-guides.git
-	ignore = dirty
 [submodule "vimfiles/bundle/tcomment_vim"]
 	path = vimfiles/bundle/tcomment_vim
 	url = https://github.com/tomtom/tcomment_vim.git
