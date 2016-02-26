@@ -60,9 +60,6 @@
 [submodule "vimfiles/bundle/colorschemes"]
 	path = vimfiles/bundle/colorschemes
 	url = https://github.com/flazz/vim-colorschemes.git
-[submodule "vimfiles/bundle/ctrlp.vim"]
-	path = vimfiles/bundle/ctrlp.vim
-	url = https://github.com/kien/ctrlp.vim.git
 [submodule "vimfiles/bundle/vim-airline"]
 	path = vimfiles/bundle/vim-airline
 	url = https://github.com/bling/vim-airline
