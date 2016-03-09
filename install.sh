@@ -5,6 +5,7 @@ DIR=`pwd`
 popd > /dev/null
 
 ln -s $DIR/.gitconfig ~/.gitconfig
+ln -s $DIR/.gitignore_global ~/.gitignore_global
 ln -s $DIR/.vimrc ~/.vimrc
 ln -s $DIR/vimfiles ~/.vim
 ln -s $DIR/.tmux.conf ~/.tmux.conf
