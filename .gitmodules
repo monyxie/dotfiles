@@ -62,9 +62,6 @@
 [submodule "vimfiles/bundle/ScrollColors"]
 	path = vimfiles/bundle/ScrollColors
 	url = https://github.com/vim-scripts/ScrollColors.git
-[submodule "vimfiles/bundle/minibufexpl.vim"]
-	path = vimfiles/bundle/minibufexpl.vim
-	url = https://github.com/fholgado/minibufexpl.vim.git
 [submodule "vimfiles/bundle/tagbar"]
 	path = vimfiles/bundle/tagbar
 	url = git://github.com/majutsushi/tagbar
