@@ -9,6 +9,7 @@ ln -s $DIR/.gitignore_global ~/.gitignore_global
 ln -s $DIR/.vimrc ~/.vimrc
 ln -s $DIR/vimfiles ~/.vim
 ln -s $DIR/.tmux.conf ~/.tmux.conf
+ln -s $DIR/.inputrc ~/.inputrc
 
 if [[ $OS == 'Linux' ]]; then
   ln -s $DIR/rime/default.custom.yaml ~/.config/ibus/rime/default.custom.yaml
