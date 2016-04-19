@@ -1,1 +1,3 @@
 #.gitignore
+vimfiles/.netrwhist
+vimfiles/bundle/tags
