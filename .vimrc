@@ -73,9 +73,12 @@ let g:syntastic_javascript_checkers = ['jshint']
 " \ 'server': '0.0.0.0'
 " \}
 
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_by_filename = 1
+
 
 " }}}
-
 
 " {{{ IndentGuides
 let g:indent_guides_start_level = 2
@@ -214,7 +217,7 @@ inoremap <silent> <C-k> <C-\><C-O><C-W>k
 inoremap <silent> <C-l> <C-\><C-O><C-W>l
 
 " CTRL+BACKSPACE to delete one word in insert mode
-inoremap <C-bs> <C-o>ciw
+inoremap <C-bs> <C-o>cb
 
 "double click to highlight all occurrances
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw
@@ -322,7 +325,8 @@ unlet s:keepcpo
 " }}}
 "
 
-execute pathogen#infect()
+call pathogen#infect()
+call pathogen#helptags()
 
 " ------------------------------------------------------------------
 " Set color scheme
@@ -335,3 +339,7 @@ endif
 
 syntax on
 filetype plugin indent on
+
+if filereadable(expand('~/.vimrc_local'))
+	source ~/.vimrc_local
+endif
