@@ -77,3 +77,9 @@
 [submodule "vimfiles/bundle/ctrlp.vim"]
 	path = vimfiles/bundle/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim
+[submodule "vimfiles/bundle/vim-sensible"]
+	path = vimfiles/bundle/vim-sensible
+	url = https://github.com/tpope/vim-sensible
+[submodule "vimfiles/bundle/python-mode"]
+	path = vimfiles/bundle/python-mode
+	url = https://github.com/klen/python-mode.git
