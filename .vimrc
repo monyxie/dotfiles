@@ -255,6 +255,8 @@ nmap <leader>v :execute getline(".")<cr>
 nmap <f2> :Tagbar<cr>
 imap <f2> <Esc>:Tagbar<cr>
 
+vmap <leader>h <Plug>(visualstar-*)N
+
 " JsBeautify
 " autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
 " autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>

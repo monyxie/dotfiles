@@ -83,3 +83,6 @@
 [submodule "vimfiles/bundle/python-mode"]
 	path = vimfiles/bundle/python-mode
 	url = https://github.com/klen/python-mode.git
+[submodule "vimfiles/bundle/vim-visualstar"]
+	path = vimfiles/bundle/vim-visualstar
+	url = https://github.com/thinca/vim-visualstar.git
