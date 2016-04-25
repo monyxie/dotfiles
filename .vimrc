@@ -277,6 +277,9 @@ au BufWritePost * let &titlestring = <SID>MyTitleLine()
 au BufReadPost *.log :set nowrap | :set number
 "Automatically change current directory to that of the file in the buffer  
 "au BufEnter * sil! cd %:p:h
+
+" set new file's fileformat
+au BufNewFile * set ff=unix
 " }}}
 
 " {{{ menus
