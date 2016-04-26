@@ -1,20 +1,39 @@
 #!/bin/bash
+
 OS=$(uname)
 pushd `dirname $0` > /dev/null
+
 DIR=`pwd`
 popd > /dev/null
 
-ln -s $DIR/.gitconfig ~/.gitconfig
-ln -s $DIR/.gitignore_global ~/.gitignore_global
-ln -s $DIR/.vimrc ~/.vimrc
-ln -s $DIR/vimfiles ~/.vim
-ln -s $DIR/.tmux.conf ~/.tmux.conf
-ln -s $DIR/.inputrc ~/.inputrc
+# plain symlinks
+ln -s "$DIR/.gitconfig" "$HOME/.gitconfig"
+ln -s "$DIR/.gitignore_global" "$HOME/.gitignore_global"
+ln -s "$DIR/.vimrc" "$HOME/.vimrc"
+ln -s "$DIR/vimfiles" "$HOME/.vim"
+ln -s "$DIR/.tmux.conf" "$HOME/.tmux.conf"
+ln -s "$DIR/.inputrc" "$HOME/.inputrc"
 
-if [[ $OS == 'Linux' ]]; then
-  ln -s $DIR/rime/default.custom.yaml ~/.config/ibus/rime/default.custom.yaml
-elif [[ $OS == 'Darwin' ]]; then
-  ln -s $DIR/rime/default.custom.yaml ~/Library/Rime/default.custom.yaml
+# rime settings
+if [[ "$OS" == 'Linux' ]]; then
+  ln -s "$DIR/rime/default.custom.yaml" "$HOME/.config/ibus/rime/default.custom.yaml"
+elif [[ "$OS" == 'Darwin' ]]; then
+  ln -s "$DIR/rime/default.custom.yaml" "$HOME/Library/Rime/default.custom.yaml"
 else
   echo 'Unsupported OS. Rime config is not installed.'
+fi
+
+# source the .bashrc in this repo from $HOME/.bashrc
+if [ -f "$HOME/.bashrc" ] ; then
+	grep -F '{{DOTFILESTAGABCD1234}}' "$HOME/.bashrc" > /dev/null; result=${?}
+	if [ ${result} -eq 0 ] ; then
+		echo '.bashrc is already installed. Skipping.'
+	else
+		echo '# {{DOTFILESTAGABCD1234}}' >> "$HOME/.bashrc"
+		echo 'if [ -f "'${DIR}'/.bashrc" ]; then' >> "$HOME/.bashrc"
+		echo '	source "'${DIR}'/.bashrc"' >> "$HOME/.bashrc"
+		echo 'fi' >> "$HOME/.bashrc"
+	fi
+else
+	echo '.bashrc does not exist. Skipping.'
 fi
