@@ -25,20 +25,21 @@ set nocompatible
 " {{{ general options, font, colorscheme
 set number
 
-set tabstop=2
+" expand tabs to spaces
+set expandtab
+
+set tabstop=4
 
 " Number of spaces to use for each step of (auto)indent.  Used for
 " |'cindent'|, |>>|, |<<|, etc.
 " When zero the 'ts' value will be used.
-set shiftwidth=2
+set shiftwidth=0
 
 " numbers of spaces a <Tab> inserts when editing, 0 to disable
 " set softtabstop=2
 
 " Round indent to multiple of 'shiftwidth'.  Applies to > and <
 " set shiftround
-
-"set expandtab
 
 set cindent
 set smartindent
@@ -81,9 +82,9 @@ let g:ctrlp_by_filename = 1
 " }}}
 
 " {{{ IndentGuides
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
+" let g:indent_guides_start_level = 2
+" let g:indent_guides_guide_size = 1
+" let g:indent_guides_enable_on_vim_startup = 1
 
 "SnipMate
 let g:snips_author = 'Mony Xie'
@@ -97,31 +98,31 @@ let g:airline_theme='powerlineish'
 " }}}
 
 " {{{ MyDiff()
-set diffexpr=MyDiff()
-function! MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let eq = ''
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ "\<cmd"
-      let cmd = '""' . $VIMRUNTIME . '\diff"'
-      let eq = '"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-endfunction
-
+" set diffexpr=MyDiff()
+" function! MyDiff()
+"   let opt = '-a --binary '
+"   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+"   if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+"   let arg1 = v:fname_in
+"   if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+"   let arg2 = v:fname_new
+"   if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+"   let arg3 = v:fname_out
+"   if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+"   let eq = ''
+"   if $VIMRUNTIME =~ ' '
+"     if &sh =~ "\<cmd"
+"       let cmd = '""' . $VIMRUNTIME . '\diff"'
+"       let eq = '"'
+"     else
+"       let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+"     endif
+"   else
+"     let cmd = $VIMRUNTIME . '\diff'
+"   endif
+"   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+" endfunction
+"
 " }}}
 
 " {{{ custom functions
@@ -235,7 +236,7 @@ noremap <a-3> /<up><up><up><cr>
 noremap <a-4> /<up><up><up><up><cr>
 noremap <a-5> /<up><up><up><up><up><cr>
 
-" gp to select pasted text in visual mode
+" gp to visual select pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]l'
 
 " ctrl-shift-n to search recently modified/deleted text(" register)
@@ -256,6 +257,8 @@ nmap <f2> :Tagbar<cr>
 imap <f2> <Esc>:Tagbar<cr>
 
 vmap <leader>h <Plug>(visualstar-*)N
+nmap <leader>gc :Gcommit<cr>
+nmap <leader>gs :Gstatus<cr>
 
 " JsBeautify
 " autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
