@@ -55,6 +55,7 @@ set grepprg=grep\ -nH
 set iminsert=0
 set imsearch=0
 set laststatus=2
+set noundofile
 " set rnu
 
 let g:colorv_loaded = 1
