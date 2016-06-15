@@ -68,7 +68,15 @@ let s:termcolor = 'molokai'
 let s:termdiffcolor = 'default'
 
 " let g:html_indent_inctags = "html,body,head,tbody"
+" :help syntastic_mode_map
+let g:syntastic_mode_map = {
+    \ "mode": "active",
+    \ "passive_filetypes": ["python"] }
+
 let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_python_python_exe = 'python'
+
+let g:pymode_python = 'python'
 
 " let g:vdebug_options = {
 " \ 'path_maps': {},
