@@ -68,7 +68,15 @@ let s:termcolor = 'molokai'
 let s:termdiffcolor = 'default'
 
 " let g:html_indent_inctags = "html,body,head,tbody"
+" :help syntastic_mode_map
+let g:syntastic_mode_map = {
+    \ "mode": "active",
+    \ "passive_filetypes": ["python"] }
+
 let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_python_python_exe = 'python'
+
+let g:pymode_python = 'python'
 " let g:syntastic_php_checkers = ["php", "phpcs", "phpmd"]
 let g:syntastic_php_checkers = ["php"]
 
@@ -221,7 +229,9 @@ inoremap <silent> <C-k> <C-\><C-O><C-W>k
 inoremap <silent> <C-l> <C-\><C-O><C-W>l
 
 " CTRL+BACKSPACE to delete one word in insert mode
-inoremap <C-bs> <C-o>cb
+inoremap <C-bs> <Esc>dbs
+" CTRL+DEL to delete one word in insert mode
+inoremap <C-del> <C-o>cw
 
 "double click to highlight all occurrances
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw
@@ -242,8 +252,8 @@ noremap <a-5> /<up><up><up><up><up><cr>
 " gp to visual select pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]l'
 
-" ctrl-shift-n to search recently modified/deleted text(" register)
-nnoremap <c-s-n> :call setreg('/', '\V' . escape(getreg('"'), '\/'))<cr>n
+" <leader>n to search recently modified/deleted text(" register)
+nnoremap <leader>n :call setreg('/', '\V' . escape(getreg('"'), '\/'))<cr>n
 
 nnoremap =<space> =a}``
 
