@@ -69,6 +69,8 @@ let s:termdiffcolor = 'default'
 
 " let g:html_indent_inctags = "html,body,head,tbody"
 let g:syntastic_javascript_checkers = ['jshint']
+" let g:syntastic_php_checkers = ["php", "phpcs", "phpmd"]
+let g:syntastic_php_checkers = ["php"]
 
 " let g:vdebug_options = {
 " \ 'path_maps': {},
