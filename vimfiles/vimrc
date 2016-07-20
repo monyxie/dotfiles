@@ -46,9 +46,9 @@ set smartindent
 " set autoindent
 set wrap
 set hlsearch
-set cursorline
+" set cursorline
 " set smarttab
-set fileformats=dos,unix
+set fileformats=unix,dos
 set nobackup
 set diffopt=filler,horizontal
 set grepprg=grep\ -nH
@@ -58,7 +58,6 @@ set laststatus=2
 set noundofile
 " set rnu
 
-let g:colorv_loaded = 1
 " let php_sql_query = 1
 " let php_folding = 1
 " set foldmethod=manual
@@ -67,32 +66,44 @@ let mapleader=','
 let s:termcolor = 'molokai'
 let s:termdiffcolor = 'default'
 
+" }}}
+
+" {{{ plugin settings
+
 " let g:html_indent_inctags = "html,body,head,tbody"
+
+" plugin:syntastic
 " :help syntastic_mode_map
 let g:syntastic_mode_map = {
     \ "mode": "active",
     \ "passive_filetypes": ["python"] }
-
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_python_python_exe = 'python'
-
-let g:pymode_python = 'python'
 " let g:syntastic_php_checkers = ["php", "phpcs", "phpmd"]
 let g:syntastic_php_checkers = ["php"]
 
+" plugin:pymode
+let g:pymode_python = 'python'
+
+" plugin:vdebug
 " let g:vdebug_options = {
 " \ 'path_maps': {},
 " \ 'server': '0.0.0.0'
 " \}
 
+" plugin:colorv
+let g:colorv_loaded = 1
+
+" plugin:ctrlp
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_by_filename = 1
 
+" plugin:vim-jsx
+let g:jsx_ext_required = 0
 
-" }}}
 
-" {{{ IndentGuides
+" IndentGuides
 " let g:indent_guides_start_level = 2
 " let g:indent_guides_guide_size = 1
 " let g:indent_guides_enable_on_vim_startup = 1
@@ -102,9 +113,11 @@ let g:snips_author = 'Mony Xie'
 
 "airline
 " let g:airline_powerline_fonts = 1
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline_theme='powerlineish'
+" let g:airline_left_sep=''
+" let g:airline_right_sep=''
+" let g:airline_theme='powerlineish'
+" let g:airline_theme='hybrid'
+let g:airline_theme='papercolor'
 
 " }}}
 

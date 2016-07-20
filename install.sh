@@ -9,8 +9,14 @@ popd > /dev/null
 # plain symlinks
 ln -s "$DIR/.gitconfig" "$HOME/.gitconfig"
 ln -s "$DIR/.gitignore_global" "$HOME/.gitignore_global"
-ln -s "$DIR/.vimrc" "$HOME/.vimrc"
+# ln -s "$DIR/.vimrc" "$HOME/.vimrc"
 ln -s "$DIR/vimfiles" "$HOME/.vim"
+
+# nvim
+mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
+ln -s "$DIR/vimfiles" "$XDG_CONFIG_HOME/nvim"
+ln -s "$DIR/vimfiles/vimrc" "$XDG_CONFIG_HOME/nvim/init.vim"
+
 ln -s "$DIR/.tmux.conf" "$HOME/.tmux.conf"
 ln -s "$DIR/.inputrc" "$HOME/.inputrc"
 
