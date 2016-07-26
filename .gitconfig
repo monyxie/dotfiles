@@ -10,8 +10,8 @@
 	guitool = p4merge
 	defaultToUpstream = true
 [diff]
-	tool = meld
-	guitool = meld
+	tool = p4merge
+	guitool = p4merge
 [push]
   default = simple
 [alias]
