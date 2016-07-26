@@ -80,3 +80,6 @@
 [submodule "vimfiles/bundle/vim-polyglot"]
 	path = vimfiles/bundle/vim-polyglot
 	url = https://github.com/sheerun/vim-polyglot
+[submodule "vimfiles/bundle/vim-visualstar"]
+	path = vimfiles/bundle/vim-visualstar
+	url = https://github.com/thinca/vim-visualstar.git
