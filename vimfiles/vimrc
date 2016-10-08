@@ -15,9 +15,9 @@ set encoding=utf8
 set fileencodings=utf8,utf16,cp936,latin1
 set nocompatible
 " if has('win32')
-    source $VIMRUNTIME/vimrc_example.vim
-    source $VIMRUNTIME/mswin.vim
-    behave mswin
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
 " endif
 
 " }}}
@@ -57,6 +57,10 @@ set imsearch=0
 set laststatus=2
 set noundofile
 " set rnu
+set splitright
+set splitbelow
+
+set list
 
 " let php_sql_query = 1
 " let php_folding = 1
@@ -75,8 +79,8 @@ let s:termdiffcolor = 'default'
 " plugin:syntastic
 " :help syntastic_mode_map
 let g:syntastic_mode_map = {
-    \ "mode": "active",
-    \ "passive_filetypes": ["python"] }
+            \ "mode": "active",
+            \ "passive_filetypes": ["python"] }
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_python_python_exe = 'python'
 " let g:syntastic_php_checkers = ["php", "phpcs", "phpmd"]
@@ -161,9 +165,9 @@ endfunction
 
 "custom title
 function! s:MyTitleLine()
-	if !exists('g:is_admin')
+    if !exists('g:is_admin')
         let g:is_admin = (filewritable($windir . '/system32/drivers'))
-	endif
+    endif
     " if match(v:servername, '^GVIM$') != -1
     "     "default server
     "     let l:servername = ''
@@ -172,12 +176,12 @@ function! s:MyTitleLine()
     " endif
     " let line =  "" . l:servername . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
     let line =  "" . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
-	if &diff
-		let line .= 'DIFF'
-	endif
-	if g:is_admin
+    if &diff
+        let line .= 'DIFF'
+    endif
+    if g:is_admin
         let line .= ' #'
-	endif
+    endif
     return line
 endfunction
 
@@ -210,15 +214,15 @@ function! s:MyJumpMyCfile()
 endfunction
 
 function! s:MyOpenHttpLink()
-	call ShellOpen(expand('<cWORD>'))
+    call ShellOpen(expand('<cWORD>'))
 endfunction
 
 " open a url or file with associated program
 " http://vim.wikia.com/wiki/Open_a_web-browser_with_the_URL_in_the_current_line
 function! ShellOpen(url)
-	let l:old_reg=@"
-	exec 'silent!!start /b cmd /c start "" ' . shellescape(a:url) . ''
-	let @"=l:old_reg
+    let l:old_reg=@"
+    exec 'silent!!start /b cmd /c start "" ' . shellescape(a:url) . ''
+    let @"=l:old_reg
 endfunction
 
 " }}}
@@ -255,18 +259,21 @@ nmap <silent> <MiddleMouse> <LeftMouse>:call <SID>MyJumpMyCfile()<cr>
 
 map <leader>c <c-_><c-_>
 
-noremap <a-`> :echo histget('search', -1) . "\n" . histget('search', -2) . "\n" . histget('search', -3) . "\n" . histget('search', -4) . "\n" . histget('search', -5)<cr>
-noremap <a-1> /<up><cr>
-noremap <a-2> /<up><up><cr>
-noremap <a-3> /<up><up><up><cr>
-noremap <a-4> /<up><up><up><up><cr>
-noremap <a-5> /<up><up><up><up><up><cr>
+" noremap <a-`> :echo histget('search', -1) . "\n" . histget('search', -2) . "\n" . histget('search', -3) . "\n" . histget('search', -4) . "\n" . histget('search', -5)<cr>
+nmap <a-1> :set fdl=1<cr>
+nmap <a-2> :set fdl=2<cr>
+nmap <a-3> :set fdl=3<cr>
+nmap <a-4> :set fdl=4<cr>
+nmap <a-5> :set fdl=5<cr>
 
 " gp to visual select pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]l'
 
 " <leader>n to search recently modified/deleted text(" register)
 nnoremap <leader>n :call setreg('/', '\V' . escape(getreg('"'), '\/'))<cr>n
+" <leader>N to search recently modified/deleted text(" register) in a
+" whole-word search manner
+nnoremap <leader>N :call setreg('/', '\V\<' . escape(getreg('"'), '\/') . '\>')<cr>n
 
 nnoremap =<space> =a}``
 
@@ -285,6 +292,14 @@ imap <f2> <Esc>:Tagbar<cr>
 vmap <leader>h <Plug>(visualstar-*)N
 nmap <leader>gc :Gcommit<cr>
 nmap <leader>gs :Gstatus<cr>
+
+nmap <space> za
+
+nmap <c-s-t> :tabnew<cr>
+imap <c-s-t> <esc><esc>:tabnew<cr>
+
+nmap <a-p> ".p
+nmap <a-P> ".P
 
 " JsBeautify
 " autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
@@ -316,42 +331,42 @@ au BufNewFile * set ff=unix
 let s:keepcpo = &cpo
 set cpo&vim
 if has("menu") && has("gui_running") && &go =~# 'm' && !exists("s:mymenu")
-	let s:mymenu= 1
-	anoremenu <silent> 11111 ★.Select\ All :normal ggVG<CR>
-	anoremenu <silent> 11111 ★.-sep1- <Nop>
-	anoremenu <silent> 11111 ★.\*Remove\ Trailing\ Spaces :g/\v^/s/\v\s+$//<CR>
-	anoremenu <silent> 11111 ★.Compress\ Empty\ Lines :call <sid>CompressEL()<CR>
-	anoremenu <silent> 11111 ★.\Remove\ \^M :%s/\v<C-V><CR>//<CR>``
-	anoremenu <silent> 11111 ★.\*Delete\ Matched\ Lines :g//d<CR>
-	anoremenu <silent> 11111 ★.\*Delete\ Unmatched\ Lines :v//d<CR>
-	anoremenu <silent> 11111 ★.\*Join\ Lines\ Begin\ w/o :call <sid>JoinBeginWo()<CR>
-	anoremenu <silent> 11111 ★.\*Generate\ Sequence :call <sid>GenerateSeq()<CR>
-	anoremenu <silent> 11111 ★.-sep2- <Nop>
-	anoremenu <silent> 11111 ★.CMD :silent!!start cmd<CR>
-	anoremenu <silent> 11111 ★.BASH :silent!!start sh --login -i<CR>
-	anoremenu <silent> 11111 ★.Explore :call <sid>Explore()<CR>
-	function s:GenerateSeq()
-		let l:p = inputdialog('range() arguments:', 10, 0)
-		let l:lp = split(l:p)
-		if l:lp[0] == 0
-			return
-		endif
-		let l:a = @a
-		let @a = join(call('range', l:lp), nr2char(10))
-		put a
-		let @a = l:a
-	endfunction
-	function s:JoinBeginWo()
-		silent! exec '%s/\v\n(' . getreg('/') . '\v)@!'
-	endfunction
-	function s:CompressEL()
-		silent! exec '%s/\v%^\n+/\r/g'
-		silent! exec '%s/\v\n+%$/\r/g'
-		silent! exec '%s/\v\n{2}\zs\n+//g'
-	endfunction
-	function s:Explore()
-		silent exec '!start explorer '.shellescape(expand('%:p:h'))
-	endfunction
+    let s:mymenu= 1
+    anoremenu <silent> 11111 ★.Select\ All :normal ggVG<CR>
+    anoremenu <silent> 11111 ★.-sep1- <Nop>
+    anoremenu <silent> 11111 ★.\*Remove\ Trailing\ Spaces :g/\v^/s/\v\s+$//<CR>
+    anoremenu <silent> 11111 ★.Compress\ Empty\ Lines :call <sid>CompressEL()<CR>
+    anoremenu <silent> 11111 ★.\Remove\ \^M :%s/\v<C-V><CR>//<CR>``
+    anoremenu <silent> 11111 ★.\*Delete\ Matched\ Lines :g//d<CR>
+    anoremenu <silent> 11111 ★.\*Delete\ Unmatched\ Lines :v//d<CR>
+    anoremenu <silent> 11111 ★.\*Join\ Lines\ Begin\ w/o :call <sid>JoinBeginWo()<CR>
+    anoremenu <silent> 11111 ★.\*Generate\ Sequence :call <sid>GenerateSeq()<CR>
+    anoremenu <silent> 11111 ★.-sep2- <Nop>
+    anoremenu <silent> 11111 ★.CMD :silent!!start cmd<CR>
+    anoremenu <silent> 11111 ★.BASH :silent!!start sh --login -i<CR>
+    anoremenu <silent> 11111 ★.Explore :call <sid>Explore()<CR>
+    function s:GenerateSeq()
+        let l:p = inputdialog('range() arguments:', 10, 0)
+        let l:lp = split(l:p)
+        if l:lp[0] == 0
+            return
+        endif
+        let l:a = @a
+        let @a = join(call('range', l:lp), nr2char(10))
+        put a
+        let @a = l:a
+    endfunction
+    function s:JoinBeginWo()
+        silent! exec '%s/\v\n(' . getreg('/') . '\v)@!'
+    endfunction
+    function s:CompressEL()
+        silent! exec '%s/\v%^\n+/\r/g'
+        silent! exec '%s/\v\n+%$/\r/g'
+        silent! exec '%s/\v\n{2}\zs\n+//g'
+    endfunction
+    function s:Explore()
+        silent exec '!start explorer '.shellescape(expand('%:p:h'))
+    endfunction
 endif
 let &cpo=s:keepcpo
 unlet s:keepcpo
@@ -366,14 +381,17 @@ call pathogen#helptags()
 " Set color scheme
 " ------------------------------------------------------------------
 if &diff
-		execute 'color ' . s:termdiffcolor
+    execute 'color ' . s:termdiffcolor
 else
-		execute 'color ' . s:termcolor
+    execute 'color ' . s:termcolor
 endif
 
 syntax on
 filetype plugin indent on
+set fdm=indent
+set fdn=3
+set fml=5
 
 if filereadable(expand('~/.vimrc_local'))
-	source ~/.vimrc_local
+    source ~/.vimrc_local
 endif
