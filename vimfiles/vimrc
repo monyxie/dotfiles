@@ -61,6 +61,7 @@ set splitright
 set splitbelow
 
 set list
+set listchars=tab:.\ ,trail:-,extends:>,precedes:<,nbsp:+
 
 " let php_sql_query = 1
 " let php_folding = 1
@@ -102,6 +103,9 @@ let g:colorv_loaded = 1
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_by_filename = 1
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_lazy_update = 1
+let g:ctrlp_mruf_relative = 1
 
 " plugin:vim-jsx
 let g:jsx_ext_required = 0
@@ -175,7 +179,18 @@ function! s:MyTitleLine()
     "     let l:servername = v:servername
     " endif
     " let line =  "" . l:servername . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
-    let line =  "" . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
+    let line = " %m"
+    " let modind = &l:modified ? "+" : "-"
+    " echo modind
+    let cd = fnamemodify(getcwd(), ":~")                    " current directory
+    if cd != "~" && cd != "/" && cd != "~/"
+        let cd = fnamemodify(cd, ":t")
+    endif
+    let line .= cd
+    if expand("%") != ""
+        " let line .= ' # ' . expand("%:.:h")             " directory of current file
+        let line .= " - " . expand("%:.")                      " current file %m is modified indicator
+    endif
     if &diff
         let line .= 'DIFF'
     endif
@@ -234,6 +249,9 @@ endfunction
 
 "nerdtree
 map <F3> <Esc><Esc>:NERDTreeToggle<CR>
+map <leader><F3> <Esc><Esc>:NERDTreeMirror<CR>
+nmap <leader>gt :NERDTreeFind<CR>
+let NERDTreeMinimalUI=1
 
 " CTRL+h/j/k/l to navigate between windows
 noremap <silent> <C-h> <C-W>h
