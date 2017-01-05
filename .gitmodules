@@ -84,3 +84,9 @@
 	path = vimfiles/bundle/vim-visualstar
 	url = https://github.com/thinca/vim-visualstar.git
     ignore = dirty
+[submodule "vimfiles/bundle/vim-fontsize"]
+	path = vimfiles/bundle/vim-fontsize
+	url = https://github.com/drmikehenry/vim-fontsize.git
+[submodule "vimfiles/bundle/undotree"]
+	path = vimfiles/bundle/undotree
+	url = https://github.com/mbbill/undotree.git
