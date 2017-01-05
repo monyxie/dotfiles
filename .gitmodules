@@ -90,3 +90,6 @@
 [submodule "vimfiles/bundle/undotree"]
 	path = vimfiles/bundle/undotree
 	url = https://github.com/mbbill/undotree.git
+[submodule "vimfiles/bundle/vim-airline-themes"]
+	path = vimfiles/bundle/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes.git
