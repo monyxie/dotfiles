@@ -127,6 +127,10 @@ let g:snips_author = 'Mony Xie'
 " let g:airline_theme='hybrid'
 let g:airline_theme='papercolor'
 
+let g:fontsize#timeout = 0
+
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+
 " }}}
 
 " {{{ MyDiff()
@@ -318,6 +322,10 @@ imap <c-s-t> <esc><esc>:tabnew<cr>
 
 nmap <a-p> ".p
 nmap <a-P> ".P
+
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
 
 " JsBeautify
 " autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
