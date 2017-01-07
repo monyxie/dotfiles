@@ -11,3 +11,7 @@ alias add.tar.gz='tar -rzf' # <dst> <src>
 alias update.tar.gz='tar -uzf' # <dst> <src>
 alias list.tar.gz='tar -tzf' # <dst> <src>
 alias un.tar.gz='tar -xzf' # <dst> <src>
+
+function psg {
+    ps ax | grep $1
+}
