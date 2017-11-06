@@ -13,6 +13,6 @@ patch:
   "menu/page_size": 9
   schema_list:
     - schema: luna_pinyin_simp    # 朙月拼音 简化字模式
-    - schema: wubi86              # 五笔86
+    - schema: wubi_pinyin              # 五笔+拼音
     - schema: double_pinyin_flypy # 小鶴雙拼
     - schema: emoji               # emoji表情
