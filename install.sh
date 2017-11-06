@@ -22,9 +22,16 @@ ln -s "$DIR/.inputrc" "$HOME/.inputrc"
 
 # rime settings
 if [[ "$OS" == 'Linux' ]]; then
-  ln -s "$DIR/rime/default.custom.yaml" "$HOME/.config/ibus/rime/default.custom.yaml"
+  ln -s "$DIR/.config/ibus/rime/default.custom.yaml" "$HOME/.config/ibus/rime/default.custom.yaml"
 elif [[ "$OS" == 'Darwin' ]]; then
-  ln -s "$DIR/rime/default.custom.yaml" "$HOME/Library/Rime/default.custom.yaml"
+  ln -s "$DIR/.config/ibus/rime/default.custom.yaml" "$HOME/Library/Rime/default.custom.yaml"
+else
+  echo 'Unsupported OS. Rime config is not installed.'
+fi
+
+# redshift
+if [[ "$OS" == 'Linux' ]]; then
+  ln -s "$DIR/.config/redshift.conf" "$HOME/.config/redshift.conf"
 else
   echo 'Unsupported OS. Rime config is not installed.'
 fi
