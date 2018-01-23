@@ -14,8 +14,7 @@ case "$METHOD" in
 esac
 
 (
-    echo "method: $CMD"
     "$CMD" "$@"
-    exit
+    echo "done"
 ) |
-zenity --text-info --auto-scroll --width 600 --height 400 --title "Checksum"
+zenity --text-info --auto-scroll --width 600 --height 400 --title "$CMD"
