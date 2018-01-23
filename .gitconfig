@@ -7,12 +7,12 @@
 	excludesfile = ~/.gitignore_global
 	quotepath = false
 [merge]
-	tool = p4merge
-	guitool = p4merge
+	tool = meld
+	guitool = meld
 	defaultToUpstream = true
 [diff]
-	tool = p4merge
-	guitool = p4merge
+	tool = meld
+	guitool = meld
 [push]
   default = simple
 [alias]
