@@ -1,0 +1,6 @@
+ibus-rime
+librime-data-double-pinyin
+librime-data-wubi
+librime-data-emoji
+librime-data-stroke
+librime-data-pinyin-simp
