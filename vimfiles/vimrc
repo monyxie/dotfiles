@@ -9,7 +9,7 @@
 set langmenu=en_US.UTF-8
 let $LANG='en'
 "language messages en
-set guioptions+=Lr
+set guioptions+=Lrm
 set guioptions-=T
 set encoding=utf8
 set fileencodings=utf8,utf16,cp936,latin1
