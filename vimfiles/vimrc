@@ -75,8 +75,6 @@ let s:termdiffcolor = 'default'
 
 " {{{ plugin settings
 
-" let g:html_indent_inctags = "html,body,head,tbody"
-
 " plugin:syntastic
 " :help syntastic_mode_map
 let g:syntastic_mode_map = {
@@ -87,18 +85,6 @@ let g:syntastic_python_python_exe = 'python'
 " let g:syntastic_php_checkers = ["php", "phpcs", "phpmd"]
 let g:syntastic_php_checkers = ["php"]
 
-" plugin:pymode
-let g:pymode_python = 'python'
-
-" plugin:vdebug
-" let g:vdebug_options = {
-" \ 'path_maps': {},
-" \ 'server': '0.0.0.0'
-" \}
-
-" plugin:colorv
-let g:colorv_loaded = 1
-
 " plugin:ctrlp
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPMixed'
@@ -107,25 +93,8 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_lazy_update = 1
 let g:ctrlp_mruf_relative = 1
 
-" plugin:vim-jsx
-let g:jsx_ext_required = 0
-
-
-" IndentGuides
-" let g:indent_guides_start_level = 2
-" let g:indent_guides_guide_size = 1
-" let g:indent_guides_enable_on_vim_startup = 1
-
 "SnipMate
 let g:snips_author = 'Mony Xie'
-
-"airline
-" let g:airline_powerline_fonts = 1
-" let g:airline_left_sep=''
-" let g:airline_right_sep=''
-" let g:airline_theme='powerlineish'
-" let g:airline_theme='hybrid'
-" let g:airline_theme='papercolor'
 
 let g:fontsize#timeout = 0
 
@@ -133,66 +102,23 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 " }}}
 
-" {{{ MyDiff()
-" set diffexpr=MyDiff()
-" function! MyDiff()
-"   let opt = '-a --binary '
-"   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-"   if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-"   let arg1 = v:fname_in
-"   if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-"   let arg2 = v:fname_new
-"   if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-"   let arg3 = v:fname_out
-"   if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-"   let eq = ''
-"   if $VIMRUNTIME =~ ' '
-"     if &sh =~ "\<cmd"
-"       let cmd = '""' . $VIMRUNTIME . '\diff"'
-"       let eq = '"'
-"     else
-"       let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-"     endif
-"   else
-"     let cmd = $VIMRUNTIME . '\diff'
-"   endif
-"   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-" endfunction
-"
-" }}}
-
 " {{{ custom functions
 "=====================================================================================
 " custom functions
 "=====================================================================================
-
-function! s:DebugRun(cmd)
-    :w
-    execute 'silent!!' . a:cmd . ' %'
-endfunction
 
 "custom title
 function! s:MyTitleLine()
     if !exists('g:is_admin')
         let g:is_admin = (filewritable($windir . '/system32/drivers'))
     endif
-    " if match(v:servername, '^GVIM$') != -1
-    "     "default server
-    "     let l:servername = ''
-    " else
-    "     let l:servername = v:servername
-    " endif
-    " let line =  "" . l:servername . "<%m" . expand("%:t") . ">" . expand("%:p:h") . " - VIM"
     let line = " %m"
-    " let modind = &l:modified ? "+" : "-"
-    " echo modind
     let cd = fnamemodify(getcwd(), ":~")                    " current directory
     if cd != "~" && cd != "/" && cd != "~/"
         let cd = fnamemodify(cd, ":t")
     endif
     let line .= cd
     if expand("%") != ""
-        " let line .= ' # ' . expand("%:.:h")             " directory of current file
         let line .= " - " . expand("%:.")                      " current file %m is modified indicator
     endif
     if &diff
@@ -202,46 +128,6 @@ function! s:MyTitleLine()
         let line .= ' #'
     endif
     return line
-endfunction
-
-function! s:MyCfile()
-    let s:mycfile = expand('<cfile>')
-    if !filereadable(s:mycfile)
-        if strpart(s:mycfile, 0, 1) == '/' || strpart(s:mycfile, 0, 1) == '\\'
-            let s:mycfile2 = strpart(s:mycfile, 1)
-            if filereadable(s:mycfile2)
-                let s:mycfile = s:mycfile2
-            endif
-        endif
-    endif
-    return s:mycfile
-endfunction
-
-"
-function! s:MyJumpMyCfile()
-    let s:mycfile = expand('<cfile>')
-    if filereadable(s:mycfile)
-        exe 'tabe ' . s:mycfile
-    else
-        if strpart(s:mycfile, 0, 1) == '/' || strpart(s:mycfile, 0, 1) == '\\'
-            let s:mycfile2 = strpart(s:mycfile, 1)
-            if filereadable(s:mycfile2)
-                exe 'tabe ' . s:mycfile2
-            endif
-        endif
-    endif
-endfunction
-
-function! s:MyOpenHttpLink()
-    call ShellOpen(expand('<cWORD>'))
-endfunction
-
-" open a url or file with associated program
-" http://vim.wikia.com/wiki/Open_a_web-browser_with_the_URL_in_the_current_line
-function! ShellOpen(url)
-    let l:old_reg=@"
-    exec 'silent!!start /b cmd /c start "" ' . shellescape(a:url) . ''
-    let @"=l:old_reg
 endfunction
 
 " }}}
@@ -276,8 +162,6 @@ inoremap <C-del> <C-o>cw
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw
 inoremap <silent> <2-LeftMouse> <esc>:let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw
 nnoremap <silent> <3-LeftMouse> V
-
-nmap <silent> <MiddleMouse> <LeftMouse>:call <SID>MyJumpMyCfile()<cr>
 
 map <leader>c <c-_><c-_>
 
@@ -326,11 +210,6 @@ nmap <a-P> ".P
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
-
-" JsBeautify
-" autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
-" autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
-" autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 
 " }}}
 
@@ -401,7 +280,7 @@ unlet s:keepcpo
 "
 
 call pathogen#infect()
-call pathogen#helptags()
+" call pathogen#helptags()
 
 " ------------------------------------------------------------------
 " Set color scheme
@@ -414,9 +293,6 @@ endif
 
 syntax on
 filetype plugin indent on
-set fdm=indent
-set fdn=3
-set fml=5
 
 if filereadable(expand('~/.vimrc_local'))
     source ~/.vimrc_local
