@@ -25,40 +25,40 @@ $DIR/.config/redshift.conf <- $XDG_CONFIG_HOME/redshift.conf
 HEREDOC
 )
 
-echo "$SYMLINKS" | sed 's/ \+<- \+/\t/g' | while IFS=$'\t' read -r COL1 COL2
+echo "$SYMLINKS" | sed 's/ \+<- \+/\t/g' | while IFS=$'\t' read -r TARGET LINKNAME
 do
-    if [ "${COL1:0:1}" == "#" ]
+    if [ "${TARGET:0:1}" == "#" ]
     then
         continue
     fi
 
-    if  [ "$COL1" == "" ] || [ "$COL2" == "" ]
+    if  [ "$TARGET" == "" ] || [ "$LINKNAME" == "" ]
     then
-        echo "[ERROR] invalid entry: $COL1 <- $COL2"
+        echo "[ERROR] invalid entry: $TARGET <- $LINKNAME"
         continue
     fi
 
-    if [ ! -e "$COL1" ]
+    if [ ! -e "$TARGET" ]
     then
-        echo "[ERROR] target file does not exist: $COL1"
+        echo "[ERROR] target file does not exist: $TARGET"
         continue
     fi
 
-    if [ -e "$COL2" ]
+    if [ -e "$LINKNAME" ]
     then
-        if [ "$COL1" == $(readlink -n --canonicalize "$COL2") ]
+        if [ "$TARGET" == $(readlink -n --canonicalize "$LINKNAME") ]
         then
-            echo "[OK] already symlinked: $COL1"
+            echo "[OK] already symlinked: $TARGET"
         else
-            echo "[ERROR] file exists: $COL2"
+            echo "[ERROR] file exists: $LINKNAME"
         fi
         continue
     fi
 
-    ERR=$(ln -sT "$COL1" "$COL2" 2>&1)
+    ERR=$(ln -sT "$TARGET" "$LINKNAME" 2>&1)
     if [ "$?" == '0' ]
     then
-        echo "[OK] $COL1"
+        echo "[OK] symlinked: $TARGET"
     else
         echo "[ERROR] $ERR"
     fi
@@ -66,28 +66,31 @@ done
 
 
 ### BASHRC
-if [ ! -f "$HOME/.bashrc" ]
+TARGET="${DIR}/.bashrc"
+FROM="$HOME/.bashrc"
+
+if [ ! -f "$FROM" ]
 then
-    touch "$HOME/.bashrc"
+    touch "$FROM"
 fi
 
 MARK='{{DOTFILESTAGABCD1234}}'
 SOURCE=$(cat <<HEREDOC
 
 ### $MARK ###
-if [ -f '${DIR}/.bashrc' ]
+if [ -f '$TARGET' ]
 then
-    source '${DIR}/.bashrc'
+    source '$TARGET'
 fi
 ### $MARK ###
 HEREDOC
 )
 
-grep -F "$MARK" "$HOME/.bashrc" > /dev/null
+grep -F "$MARK" "$FROM" > /dev/null
 if [ $? -eq 0 ]
 then
-    echo '[OK] .bashrc is already sourced.'
+    echo "[OK] already sourced: $TARGET"
 else
-    echo "$SOURCE" >> "$HOME/.bashrc"
-    echo '[OK] .bashrc is installed.'
+    echo "$SOURCE" >> "$FROM"
+    echo "[OK] sourced: $TARGET"
 fi
