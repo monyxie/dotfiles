@@ -45,3 +45,5 @@
 	meta = white
 [i18n]
 	filesEncoding = utf-8
+[pull]
+	ff = only
