@@ -22,6 +22,7 @@ $DIR/vimfiles <- $HOME/.vim
 $DIR/.config/caja/scripts <- $XDG_CONFIG_HOME/caja/scripts
 $DIR/.config/ibus/rime/default.custom.yaml <- $XDG_CONFIG_HOME/ibus/rime/default.custom.yaml
 $DIR/.config/redshift.conf <- $XDG_CONFIG_HOME/redshift.conf
+$DIR/.config/rofi/config.rasi <- $XDG_CONFIG_HOME/rofi/config.rasi
 HEREDOC
 )
 
@@ -54,6 +55,9 @@ do
         fi
         continue
     fi
+
+    LINKDIR=$(dirname $LINKNAME)
+    mkdir -p "$LINKDIR"
 
     ERR=$(ln -sT "$TARGET" "$LINKNAME" 2>&1)
     if [ "$?" == '0' ]
