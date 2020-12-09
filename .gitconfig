@@ -45,5 +45,8 @@
 	meta = white
 [i18n]
 	filesEncoding = utf-8
+[gui]
+	fontui = -family \"Noto Sans CJK SC\" -size 8 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family Iosevka -size 8 -weight normal -slant roman -underline 0 -overstrike 0
 [pull]
 	ff = only
