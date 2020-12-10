@@ -109,9 +109,6 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 "custom title
 function! s:MyTitleLine()
-    if !exists('g:is_admin')
-        let g:is_admin = (filewritable($windir . '/system32/drivers'))
-    endif
     let line = " %m"
     let cd = fnamemodify(getcwd(), ":~")                    " current directory
     if cd != "~" && cd != "/" && cd != "~/"
@@ -123,9 +120,6 @@ function! s:MyTitleLine()
     endif
     if &diff
         let line .= 'DIFF'
-    endif
-    if g:is_admin
-        let line .= ' #'
     endif
     return line
 endfunction
@@ -163,7 +157,7 @@ nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\
 inoremap <silent> <2-LeftMouse> <esc>:let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viw
 nnoremap <silent> <3-LeftMouse> V
 
-map <leader>c <c-_><c-_>
+map <c-/> <c-_><c-_>
 
 " noremap <a-`> :echo histget('search', -1) . "\n" . histget('search', -2) . "\n" . histget('search', -3) . "\n" . histget('search', -4) . "\n" . histget('search', -5)<cr>
 nmap <a-1> :set fdl=1<cr>
@@ -183,17 +177,12 @@ nnoremap <leader>N :call setreg('/', '\V\<' . escape(getreg('"'), '\/') . '\>')<
 
 nnoremap =<space> =a}``
 
-nnoremap cu ct_
-
 nnoremap <c-d> <LeftMouse>gelve
 inoremap <c-d> <Esc><LeftMouse>gelve
 vnoremap <c-d> <Esc><LeftMouse>gElvE
 snoremap <c-d> <c-g>gElvE
 
 nmap <leader>v :execute getline(".")<cr>
-
-nmap <f2> :Tagbar<cr>
-imap <f2> <Esc>:Tagbar<cr>
 
 vmap <leader>h <Plug>(visualstar-*)N
 nmap <leader>gc :Gcommit<cr>
@@ -231,56 +220,31 @@ au BufReadPost *.log :set nowrap | :set number
 au BufNewFile * set ff=unix
 " }}}
 
-" {{{ menus
+" {{{ Plugins
 
-let s:keepcpo = &cpo
-set cpo&vim
-if has("menu") && has("gui_running") && &go =~# 'm' && !exists("s:mymenu")
-    let s:mymenu= 1
-    anoremenu <silent> 11111 ★.Select\ All :normal ggVG<CR>
-    anoremenu <silent> 11111 ★.-sep1- <Nop>
-    anoremenu <silent> 11111 ★.\*Remove\ Trailing\ Spaces :g/\v^/s/\v\s+$//<CR>
-    anoremenu <silent> 11111 ★.Compress\ Empty\ Lines :call <sid>CompressEL()<CR>
-    anoremenu <silent> 11111 ★.\Remove\ \^M :%s/\v<C-V><CR>//<CR>``
-    anoremenu <silent> 11111 ★.\*Delete\ Matched\ Lines :g//d<CR>
-    anoremenu <silent> 11111 ★.\*Delete\ Unmatched\ Lines :v//d<CR>
-    anoremenu <silent> 11111 ★.\*Join\ Lines\ Begin\ w/o :call <sid>JoinBeginWo()<CR>
-    anoremenu <silent> 11111 ★.\*Generate\ Sequence :call <sid>GenerateSeq()<CR>
-    anoremenu <silent> 11111 ★.-sep2- <Nop>
-    anoremenu <silent> 11111 ★.CMD :silent!!start cmd<CR>
-    anoremenu <silent> 11111 ★.BASH :silent!!start sh --login -i<CR>
-    anoremenu <silent> 11111 ★.Explore :call <sid>Explore()<CR>
-    function s:GenerateSeq()
-        let l:p = inputdialog('range() arguments:', 10, 0)
-        let l:lp = split(l:p)
-        if l:lp[0] == 0
-            return
-        endif
-        let l:a = @a
-        let @a = join(call('range', l:lp), nr2char(10))
-        put a
-        let @a = l:a
-    endfunction
-    function s:JoinBeginWo()
-        silent! exec '%s/\v\n(' . getreg('/') . '\v)@!'
-    endfunction
-    function s:CompressEL()
-        silent! exec '%s/\v%^\n+/\r/g'
-        silent! exec '%s/\v\n+%$/\r/g'
-        silent! exec '%s/\v\n{2}\zs\n+//g'
-    endfunction
-    function s:Explore()
-        silent exec '!start explorer '.shellescape(expand('%:p:h'))
-    endfunction
-endif
-let &cpo=s:keepcpo
-unlet s:keepcpo
+call plug#begin()
+Plug 'junegunn/vim-easy-align'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'tomtom/tlib_vim'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'garbas/vim-snipmate'
+Plug 'tpope/vim-surround'
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/Align'
+Plug 'tomtom/tcomment_vim'
+Plug 'scrooloose/syntastic'
+Plug 'vim-scripts/ScrollColors'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-sensible'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'thinca/vim-visualstar'
+Plug 'drmikehenry/vim-fontsize'
+Plug 'tpope/vim-sleuth'
+call plug#end()
 
 " }}}
-"
-
-call pathogen#infect()
-" call pathogen#helptags()
 
 " ------------------------------------------------------------------
 " Set color scheme

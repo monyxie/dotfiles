@@ -1,3 +1,4 @@
 #.gitignore
 vimfiles/.netrwhist
 vimfiles/bundle/tags
+vimfiles/plugged

@@ -7,12 +7,12 @@
 	excludesfile = ~/.gitignore_global
 	quotepath = false
 [merge]
-	tool = meld
-	guitool = meld
+	tool = kdiff3
+	guitool = kdiff3
 	defaultToUpstream = true
 [diff]
-	tool = meld
-	guitool = meld
+	tool = kdiff3
+	guitool = kdiff3
 [push]
   default = simple
 [alias]
