@@ -1,4 +1,0 @@
-[submodule "vimfiles/bundle/Align"]
-	path = vimfiles/bundle/Align
-	url = https://github.com/vim-scripts/Align.git
-	ignore = dirty
