@@ -95,6 +95,11 @@ let g:ctrlp_mruf_relative = 1
 
 "SnipMate
 let g:snips_author = 'Mony Xie'
+let g:snipMate = { 'snippet_version' : 1 }
+
+" vim-mark
+" no default mappings
+:let g:mw_no_mappings = 1
 
 let g:fontsize#timeout = 0
 
@@ -242,6 +247,8 @@ Plug 'sheerun/vim-polyglot'
 Plug 'thinca/vim-visualstar'
 Plug 'drmikehenry/vim-fontsize'
 Plug 'tpope/vim-sleuth'
+Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-mark'
 call plug#end()
 
 " }}}
