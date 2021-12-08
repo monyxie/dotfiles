@@ -103,7 +103,12 @@ let g:snipMate = { 'snippet_version' : 1 }
 
 let g:fontsize#timeout = 0
 
+" editor-config
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+
+" align
+" see :h align
+let g:Align_xstrlen=3
 
 " }}}
 
