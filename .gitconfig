@@ -1,6 +1,6 @@
 [user]
   email = monyxie@gmail.com
-  name = Mony Xie
+  name = Max Xie
 [core]
 	editor = vim
 	autocrlf = Input
@@ -50,3 +50,5 @@
 	fontdiff = -family Iosevka -size 8 -weight normal -slant roman -underline 0 -overstrike 0
 [pull]
 	ff = only
+[init]
+	defaultBranch = master
