@@ -12,8 +12,8 @@ fi
 mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
 
 SYMLINKS=$(cat <<HEREDOC
-$DIR/.gitconfig <- $HOME/.gitconfig
-$DIR/.gitignore_global <- $HOME/.gitignore_global 
+$DIR/.gitconfig <- $XDG_CONFIG_HOME/git/config
+$DIR/.gitignore_global <- $HOME/.gitignore_global
 $DIR/.inputrc <- $HOME/.inputrc
 $DIR/.tmux.conf <- $HOME/.tmux.conf
 $DIR/vimfiles <- $HOME/.vim
