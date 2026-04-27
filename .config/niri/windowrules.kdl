@@ -1,0 +1,152 @@
+// Window rules let you adjust behavior for individual windows.
+// Find more information on the wiki:
+// https://yalter.github.io/niri/Configuration:-Window-Rules
+
+// Work around WezTerm's initial configure bug
+// by setting an empty default-column-width.
+window-rule {
+    // This regular expression is intentionally made as specific as possible,
+    // since this is the default config, and we want no false positives.
+    // You can get away with just app-id="wezterm" if you want.
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+
+//  block out two password managers from screen capture.
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+
+    block-out-from "screen-capture"
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}
+
+// keepass
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"# title="^Unlock Database - KeePassXC$"
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"# title="^KeePassXC - Browser Access Request$"
+
+    open-floating true
+    open-focused true
+    open-on-workspace "browser"
+}
+
+// browsers
+window-rule {
+    match app-id="firefox"
+    match app-id="chromium"
+
+    open-maximized true
+    open-on-workspace "browser"
+}
+
+// firefox private browsing window
+window-rule {
+    match app-id=r#"^firefox$"# title=r#"Mozilla Firefox Private Browsing$"#
+    block-out-from "screen-capture"
+}
+
+// chrome dev tools open with 50% width
+window-rule {
+    match app-id="chromium" title=r#"^DevTools"#
+    default-column-width { proportion 0.5; }
+    open-maximized false
+}
+
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    // This app-id regular expression will work for both:
+    // - host Firefox (app-id is "firefox")
+    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id=r#"firefox$"# title="^ピクチャーインピクチャー$"
+    open-floating true
+    default-column-width { proportion 0.3; }
+    default-window-height { proportion 0.3; }
+    default-floating-position x=10 y=10 relative-to="bottom-left"
+}
+
+// chat apps
+window-rule {
+    match app-id="wechat"
+    match app-id="net.jami.Jami"
+    match app-id=r#"^chrome-"# title="WhatsApp Web"
+
+    block-out-from "screen-capture"
+    open-on-workspace "chat"
+}
+
+window-rule {
+    match app-id="Zoom Workplace"
+    match app-id="zoom"
+
+    open-on-workspace "chat"
+}
+
+// work apps
+window-rule {
+    match app-id="Upwork"
+
+    block-out-from "screen-capture"
+    // open-on-workspace "work"
+}
+
+window-rule {
+    match app-id="Upwork" title="Control Panel"
+    open-floating true
+    default-floating-position x=0 y=0 relative-to="bottom-left"
+    border {
+        off
+        width 0
+    }
+}
+
+window-rule {
+    match app-id="Upwork" title="Control Panel" is-active=false is-floating=true
+    opacity 0.8
+    shadow {
+        on
+        softness 2
+        spread 1
+        offset x=0 y=0
+        color "#fff"
+    }
+}
+
+// work apps
+window-rule {
+    match app-id="jetbrains-phpstorm"
+    match app-id="Windsurf"
+    match app-id="cursor"
+    match app-id="codium"
+    match app-id="bruno"
+
+    open-maximized true
+    open-on-workspace "work"
+}
+
+// game apps
+window-rule {
+    match app-id="net.lutris.Lutris"
+    match app-id="steam"
+    match app-id="eden"
+
+    open-on-workspace "game"
+}
+
+// games
+window-rule {
+    match app-id="gamescope"
+
+    open-maximized true
+    open-on-workspace "game"
+}
+
+// Example: enable rounded corners for all windows.
+// (This example rule is commented out with a "/-" in front.)
+window-rule {
+    geometry-corner-radius 5
+    clip-to-geometry true
+    open-focused true
+}

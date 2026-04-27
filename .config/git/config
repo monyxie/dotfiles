@@ -1,0 +1,59 @@
+[user]
+  email = monyxie@gmail.com
+  name = Max Xie
+[core]
+	editor = vim
+	autocrlf = Input
+	excludesfile = ~/.gitignore_global
+	quotepath = false
+[merge]
+	tool = p4merge
+	guitool = p4merge
+	defaultToUpstream = true
+[diff]
+	tool = meld
+	guitool = meld
+[push]
+  default = simple
+[alias]
+	a = add
+	b = !cd $(git rev-parse --show-cdup)
+	co = checkout
+	ci = commit
+	l = log --oneline
+	m = merge
+	p = pull
+	pr = pull --rebase
+	rb = rebase
+	rs = reset
+	rh = reset --hard
+	s = status
+	ss = status -s
+	cfg = config --global
+	pk = cherry-pick
+	root = !pwd -P
+	au = update-index --assume-unchanged
+	noau = update-index --no-assume-unchanged
+	sw = update-index --skip-worktree
+	nosw = update-index --no-skip-worktree
+[color]
+	status = true
+[color "status"]
+	changed = green
+	untracked = yellow
+	updated = magenta
+	meta = white
+[i18n]
+	filesEncoding = utf-8
+[gui]
+	fontui = -family \"Noto Sans CJK SC\" -size 8 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family Iosevka -size 8 -weight normal -slant roman -underline 0 -overstrike 0
+[pull]
+	ff = only
+[init]
+	defaultBranch = master
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
