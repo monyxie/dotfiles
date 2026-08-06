@@ -78,10 +78,15 @@ window-rule {
 }
 
 window-rule {
-    match app-id="Zoom Workplace"
     match app-id="zoom"
+    match app-id="Zoom Workplace"
+    // match app-id="zoom" title="annotate_toolbar"
+    // match app-id="zoom" title="zoom"
+    exclude title="^Meeting$"
+    exclude title="^Zoom Workspace"
 
-    open-on-workspace "chat"
+    open-floating true
+    open-focused false
 }
 
 // work apps
@@ -93,8 +98,8 @@ window-rule {
 }
 
 window-rule {
-    match app-id="Upwork" title="Control Panel"
-    open-floating true
+    match app-id="Upwork" /* title="Control Panel" */
+    /* open-floating false */
     default-floating-position x=0 y=0 relative-to="bottom-left"
     border {
         off
@@ -103,15 +108,10 @@ window-rule {
 }
 
 window-rule {
-    match app-id="Upwork" title="Control Panel" is-active=false is-floating=true
-    opacity 0.8
-    shadow {
-        on
-        softness 2
-        spread 1
-        offset x=0 y=0
-        color "#fff"
-    }
+    // screenshot notification
+    match app-id="Upwork" title="Upwork"
+    open-focused false
+    default-floating-position x=0 y=0 relative-to="bottom-left"
 }
 
 // work apps
@@ -143,10 +143,38 @@ window-rule {
     open-on-workspace "game"
 }
 
+window-rule {
+    match is-floating=true
+    geometry-corner-radius 10
+}
+
+window-rule {
+    match is-active=false is-floating=true
+    opacity 0.8
+    shadow {
+        on
+        softness 1
+        spread 0
+        offset x=0 y=0
+        color "#fff"
+    }
+}
+
+window-rule {
+    match app-id="fcitx" title="Fcitx5 Input Window"
+    open-floating true
+    open-focused false
+}
+
+
+window-rule {
+    match app-id="com.libretro.RetroArch"
+    open-focused true
+}
+
+
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
 window-rule {
-    geometry-corner-radius 5
     clip-to-geometry true
-    open-focused true
 }
