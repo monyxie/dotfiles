@@ -3,3 +3,6 @@
 [._]s[a-w][a-z]
 .idea
 
+.~lock.*#
+
+**/.claude/settings.local.json
