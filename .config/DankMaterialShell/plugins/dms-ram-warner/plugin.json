@@ -1,0 +1,11 @@
+{
+    "id": "ramWarner",
+    "name": "RAM Warner",
+    "description": "Warn you when available RAM is low",
+    "version": "0.0.1",
+    "license": "MIT",
+    "author": "monyxie",
+    "icon": "developer_board",
+    "firstParty": false,
+    "component": "./RamMonitor.qml"
+}
