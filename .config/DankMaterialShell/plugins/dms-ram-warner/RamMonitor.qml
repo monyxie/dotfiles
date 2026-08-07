@@ -42,7 +42,7 @@ BasePill {
                 z: -1
 
                 SequentialAnimation {
-                    running: DgopService.memoryUsage >= 80
+                    running: DgopService.memoryUsage >= 90
                     loops: Animation.Infinite
 
                     onRunningChanged: {
