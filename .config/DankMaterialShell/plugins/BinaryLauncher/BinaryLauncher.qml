@@ -163,6 +163,86 @@ QtObject {
         return icon;
     }
 
+    // Tokenize a binary's file name for matching. We go further than DMS's
+    // native tokenizer: besides splitting on spaces, "-", "_" and ".", we also
+    // break camelCase and letter/digit boundaries, so "GitHubDesktop" yields
+    // ["git", "hub", "desktop"]. The file extension is appended as its own token.
+    function splitTokens(name) {
+        const spaced = name
+            .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+            .replace(/([A-Za-z])([0-9])/g, "$1 $2")
+            .replace(/([0-9])([A-Za-z])/g, "$1 $2");
+        const out = [];
+        const parts = spaced.split(/[\s\-_.]+/);
+        for (let i = 0; i < parts.length; i++) {
+            const t = parts[i].toLowerCase();
+            if (t.length > 0)
+                out.push(t);
+        }
+        const dot = name.lastIndexOf(".");
+        if (dot > 0 && dot < name.length - 1)
+            out.push(name.substring(dot + 1).toLowerCase());
+        return out;
+    }
+
+    // Split a query into words on spaces, "-" and "_".
+    function queryTokens(q) {
+        return q.toLowerCase().trim().split(/[\s\-_]+/).filter(function (t) {
+            return t.length > 0;
+        });
+    }
+
+    // Score a binary name against the query, mirroring the feel of DMS's native
+    // launcher matching but allowing the matched words to be non-consecutive
+    // (an ordered prefix subsequence). Returns a positive score, or -1 for no
+    // match. Higher is better; this becomes the item's _preScored value so DMS
+    // keeps our result and preserves our ranking.
+    function matchScore(name, qTokens, qJoined) {
+        const ln = name.toLowerCase();
+        if (qTokens.length === 0)
+            return 0;
+        if (ln === qJoined)
+            return 10000;
+        if (ln.startsWith(qJoined))
+            return 6000;
+
+        const tokens = splitTokens(name);
+        let ti = 0;
+        let first = -1;
+        let last = -1;
+        let prev = -1;
+        let consec = 0;
+
+        for (let qi = 0; qi < qTokens.length; qi++) {
+            const qt = qTokens[qi];
+            let found = -1;
+            while (ti < tokens.length) {
+                if (tokens[ti].indexOf(qt) === 0) {
+                    found = ti;
+                    ti++;
+                    break;
+                }
+                ti++;
+            }
+            if (found === -1)
+                return ln.indexOf(qJoined) !== -1 ? 400 : -1;
+            if (first === -1)
+                first = found;
+            if (prev !== -1 && found === prev + 1)
+                consec++;
+            prev = found;
+            last = found;
+        }
+
+        let s = 2500;
+        if (first === 0)
+            s += 800;             // match begins at the first word
+        s += consec * 150;        // reward adjacency (closer to native behavior)
+        s -= (last - first) * 10; // small penalty for spread-out matches
+        s -= ln.length;           // gently prefer shorter names
+        return s > 0 ? s : 1;
+    }
+
     // Called by DMS every time the query changes.
     function getItems(query) {
         // Pick up settings edits (e.g. new directories) made while the launcher
@@ -181,7 +261,8 @@ QtObject {
                 icon: "material:folder_off",
                 comment: "Open Settings → Plugins → Binary Launcher to add directories to scan",
                 action: "noop:",
-                categories: ["Binary Launcher"]
+                categories: ["Binary Launcher"],
+                _preScored: 1 // keep visible even while a query is typed
             }];
         }
 
@@ -191,7 +272,8 @@ QtObject {
                 icon: "material:hourglass_empty",
                 comment: "Indexing executables in your configured directories",
                 action: "noop:",
-                categories: ["Binary Launcher"]
+                categories: ["Binary Launcher"],
+                _preScored: 1
             }];
         }
 
@@ -199,33 +281,56 @@ QtObject {
             ? "Enter: run in terminal · Shift+Enter: run detached"
             : "Enter: launch · Shift+Enter: run in terminal";
 
-        const items = [];
-        for (let i = 0; i < binaries.length; i++) {
-            const bin = binaries[i];
-            if (q.length > 0 && bin.name.toLowerCase().indexOf(q) === -1)
-                continue;
-
-            items.push({
+        const makeItem = function (bin) {
+            return {
                 name: bin.name,
                 icon: iconForName(bin.name),
                 comment: bin.path + "  ·  " + shiftHint,
+                keywords: splitTokens(bin.name),
                 action: "run:" + bin.path,
                 categories: ["Binary Launcher"]
-            });
+            };
+        };
 
-            if (items.length >= maxResults)
-                break;
-        }
+        // No query: browse everything (capped), plus a rescan entry.
+        const qTokens = queryTokens(q);
+        if (q.length === 0 || qTokens.length === 0) {
+            const browse = [];
+            for (let i = 0; i < binaries.length && browse.length < maxResults; i++)
+                browse.push(makeItem(binaries[i]));
 
-        // Offer a manual rescan when browsing (no query typed).
-        if (q.length === 0) {
-            items.push({
+            browse.push({
                 name: "Rescan directories",
                 icon: "material:refresh",
                 comment: binaries.length + " executable(s) indexed · click to refresh",
                 action: "rescan:",
                 categories: ["Binary Launcher"]
             });
+            return browse;
+        }
+
+        // Query present: score with our own matcher, rank, cap, and pin the
+        // result order via _preScored so DMS keeps exactly these items.
+        const qJoined = q.replace(/\s+/g, "");
+        const matches = [];
+        for (let i = 0; i < binaries.length; i++) {
+            const sc = matchScore(binaries[i].name, qTokens, qJoined);
+            if (sc > 0)
+                matches.push({ bin: binaries[i], score: sc });
+        }
+
+        matches.sort(function (a, b) {
+            if (b.score !== a.score)
+                return b.score - a.score;
+            return a.bin.name.localeCompare(b.bin.name);
+        });
+
+        const items = [];
+        const limit = Math.min(maxResults, matches.length);
+        for (let i = 0; i < limit; i++) {
+            const item = makeItem(matches[i].bin);
+            item._preScored = matches[i].score;
+            items.push(item);
         }
 
         return items;
