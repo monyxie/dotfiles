@@ -100,7 +100,7 @@ window-rule {
 window-rule {
     match app-id="Upwork" /* title="Control Panel" */
     /* open-floating false */
-    default-floating-position x=0 y=0 relative-to="bottom-left"
+    default-floating-position x=0 y=0 relative-to="top-right"
     border {
         off
         width 0
