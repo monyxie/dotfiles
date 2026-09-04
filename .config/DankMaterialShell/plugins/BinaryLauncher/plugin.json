@@ -1,0 +1,22 @@
+{
+    "id": "binaryLauncher",
+    "name": "Binary Launcher",
+    "description": "Scan configured directories for executables and launch them from the DMS launcher",
+    "version": "1.0.0",
+    "author": "Built with the DMS plugin API",
+    "icon": "terminal",
+    "type": "launcher",
+    "capabilities": [
+        "launcher",
+        "command-execution"
+    ],
+    "component": "./BinaryLauncher.qml",
+    "settings": "./BinaryLauncherSettings.qml",
+    "trigger": "$",
+    "requires_dms": ">=0.1.18",
+    "permissions": [
+        "settings_read",
+        "settings_write",
+        "process"
+    ]
+}
